@@ -1,38 +1,77 @@
-# create-svelte
+# Gieß' Bielefeld
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+TODO: Beschreibung hinzufügen.
 
-## Creating a project
+## Setup
 
-If you're seeing this, you've probably already done this step. Congrats!
+Für die lokale Entwicklung muss eine Supabase-Instanz aufgesetzt werden.
+Hierfür kann die [`supabase-cli`](https://supabase.com/docs/guides/cli) verwendet werden:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+```
+npm install -g supabase-cli
+supabase start
+supabase migrations up
 ```
 
-## Developing
+Die `.env`-Datei muss mit den Zugangsdaten zur Supabase-Instanz gefüllt werden, die beim Start der Supabase auf der
+Konsole ausgegeben werden. Ein Beispiel für die `.env`-Datei befindet sich in der Datei `.env.example`:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```
+VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
 
-```bash
+Die entsprechenden Werte für `VITE_SUPABASE_ANON_KEY` und `SUPABASE_SERVICE_ROLE_KEY` müssen in die `.env`-Datei
+eingetragen werden und entsprechen den Werten `anon key` und `service_role key` aus der Ausgabe der 
+`supabase start`-Kommandos.
+
+### Berechtigungen
+
+Um auf die Supabase-Instanz und die darin enthaltenen Daten zugreifen zu können, müssen die Berechtigungen für die
+Tabelle `trees` vergeben werden.
+Dazu kann das Supabase Studio unter der URL http://127.0.0.1:54323 geöffnet werden, solange die Supabase im Hintergrund
+läuft.
+Dort kann die Tabelle `trees` ausgewählt und die Berechtigungen für die Tabelle vergeben werden:
+In der linken Seitenleiste wird der Table Editor ausgewählt.
+In der geöffneten Ansicht wählst du dann die Tabelle `trees` aus.
+Oben rechts klickst du auf `Add RLS policy` und dann oben rechts auf `New policy`, im sich öffnenden Dialog dann
+`Get started quickly`.
+Anschließend kannst du die Berechtigungen anpassen, für uns reicht es dann unten rechts auf `Use this template`  zu
+klicken.
+Danach klickst du auf `Review` unten rechts und schließlich auf `Save policy`.
+
+### Datenimport
+
+Für den Import der Daten wird die `trees.json`-Datei benötigt, die aktuell nicht Bestandteil dieses Repositorys ist.
+Diese Datei muss im `import`-Verzeichnis abgelegt werden.
+Anschließend kann der Import mit dem `import`-Skript im `import`-Ordner gestartet werden.
+Da weitere Bibliotheken erforderlich sind, um die Daten zu importieren, empfiehlt es sich, eine virtuelle
+Python-Umgebung zu erstellen und die erforderlichen Bibliotheken zu installieren:
+
+```
+cd import
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Anschließend kann der Import gestartet werden:
+
+```
+python import.py
+```
+
+## Entwicklung
+
+Installiere die Abhängigkeiten, bevor du mit der Entwicklung beginnst:
+
+```
+npm install
+```
+
+Anschließend kannst du das mit Svelte entwickelte Frontend starten:
+
+```
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
