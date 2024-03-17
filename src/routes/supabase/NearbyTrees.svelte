@@ -4,8 +4,10 @@
 	let trees;
 	$: trees = [];
 
-	let lat = 51.967253570179;
-	let long = 8.40436126403756;
+	let lat;
+	$: lat = 51.967253570179;
+	let long;
+	$: long = 8.40436126403756;
 
 	const getTrees = () => {
 		supabase.rpc('nearby_trees', {
@@ -25,12 +27,12 @@
 	<div class="flex row space-x-4">
 		<div>
 			<label for="lat-input" >Längengrad:</label>
-			<input id="lat-input" type="number" value={lat} class="border border-black rounded-sm" />
+			<input id="lat-input" type="number" bind:value={lat} class="border border-black rounded-sm" />
 		</div>
 
 		<div>
 			<label for="long-input">Breitengrad:</label>
-			<input id="long-input" type="number" value={long} class="border border-black rounded-sm" />
+			<input id="long-input" type="number" bind:value={long} class="border border-black rounded-sm" />
 		</div>
 
 		<button on:click={()=>getTrees()}>Bäume laden</button>
