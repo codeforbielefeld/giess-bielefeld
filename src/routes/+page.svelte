@@ -36,7 +36,7 @@
 	<TreeDetail tree_id="42"
 				tree_type="Linde (Thilia)"
 				tree_name="Winter-Linde"
-				tree_description={loremIpsum()}
+				tree_description={"Eine ganz tolle Beschreibung für diesen Typ von Baum ..."}
 				tree_age={39}
 				water_requirement_30_days={70.00}
 				rain_30_days={66.40}
