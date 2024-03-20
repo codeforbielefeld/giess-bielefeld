@@ -2,6 +2,7 @@
 	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import TreeDetail from "$lib/treeDetail/TreeDetail.svelte";
 
 	const name: string = 'helen';
 	$: name_new = 'daniel';
@@ -32,7 +33,21 @@
 		try editing <strong>src/routes/+page.svelte</strong>
 	</h2>
 
+	<TreeDetail tree_id="42"
+				tree_type="Linde (Thilia)"
+				tree_name="Winter-Linde"
+				tree_description={loremIpsum()}
+				tree_age={39}
+				water_requirement_30_days={70.00}
+				rain_30_days={66.40}
+				water_spilled_30_days={1.50}>
+	</TreeDetail>
+
 	<Counter />
+
+
+
+
 </section>
 
 <style>
@@ -46,6 +61,7 @@
 
 	h1 {
 		width: 100%;
+		font-size: 20pt;
 	}
 
 	.welcome {
