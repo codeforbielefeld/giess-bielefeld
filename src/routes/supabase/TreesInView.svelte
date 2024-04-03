@@ -20,7 +20,8 @@
 	onMount(async () => {
 		const L = await import('leaflet');
 
-		const tileURL: string = `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png`;
+		const tileURL: string = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/light_nolabels/{z}/{x}/{y}.png"
+		//const tileURL: string = `https://{s}.basemaps.cartocdn.com/rastertiles/light_labels_under/{z}/{x}/{y}.png`;
 		// const tileURL: string = `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`;
 
 		const layer = L.tileLayer(tileURL, {
@@ -32,14 +33,11 @@
 
 
 
-		var greenIcon = L.icon({
-			iconUrl: 'leaf-green.png',
-			shadowUrl: 'leaf-shadow.png',
-			iconSize:     [38, 95], // size of the icon
-			shadowSize:   [50, 64], // size of the shadow
-			iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-			shadowAnchor: [4, 62],  // the same for the shadow
-			popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		const greenIcon = L.icon({
+			iconUrl: 'Baum 2@2x.png',
+			iconSize:     [32, 32], // size of the icon
+			iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
+			popupAnchor:  [0, -12] // point from which the popup should open relative to the iconAnchor
 		});
 
 
@@ -114,7 +112,7 @@
 
 <!--	</div>-->
 
-<div id="map" class="w-full h-96"></div>
+<div id="map" class="w-full h-[1000px]"></div>
 
 <!--	<div>Bäume in der Nähe:</div>-->
 <!--	<ul class="list-disc max-h-64 overflow-y-scroll">-->
