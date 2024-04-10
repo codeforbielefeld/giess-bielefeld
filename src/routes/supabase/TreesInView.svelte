@@ -2,14 +2,12 @@
 	import { supabase } from '../../supabase';
 	import { onMount } from 'svelte';
 	import 'leaflet/dist/leaflet.css';
+	import findMatchingSegments from '../../businessLogic/findSegments';
 
-
-	let trees;
-	$: trees = [];
 
 	let map: Map;
 
-	let visibleTrees = new Set();
+	let visibleSegments = new Set();
 
 	let min_lat = 52.026731;
 	let min_long = 8.5297468;
@@ -24,6 +22,7 @@
 		//const tileURL: string = `https://{s}.basemaps.cartocdn.com/rastertiles/light_labels_under/{z}/{x}/{y}.png`;
 		// const tileURL: string = `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`;
 
+		// Overlay Copyright
 		const layer = L.tileLayer(tileURL, {
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
 			subdomains: 'abcd',
@@ -32,7 +31,7 @@
 		});
 
 
-
+		// Icon für Bäume
 		const greenIcon = L.icon({
 			iconUrl: 'Baum 2@2x.png',
 			iconSize:     [32, 32], // size of the icon
@@ -44,33 +43,29 @@
 
 		const onMove = (e) => {
 			const bounds = e.target.getBounds();
-			min_lat = bounds._northEast.lat;
-			min_long = bounds._northEast.lng;
-			max_lat = bounds._southWest.lat;
-			max_long = bounds._southWest.lng;
-			console.log(min_lat, min_long, max_lat, max_long);
-			getTreesInView().then(({ data, error }) => {
-				if (error) {
-					console.error(error);
-				} else {
-					trees = data;
-
-					trees.map((tree: unknown) => {
-						if (visibleTrees.has(tree.id)) {
-							return;
-						} else {
-							visibleTrees.add(tree.id);
-							L.marker([tree.lat, tree.long]).setIcon(greenIcon).addTo(e.target)
-								.bindPopup(tree.tree_type_german);
-						}
+			const maxY = bounds._northEast.lat;
+			const maxX = bounds._northEast.lng;
+			const minY = bounds._southWest.lat;
+			const minX = bounds._southWest.lng;
+			findMatchingSegments(minX, maxX, minY, maxY).then((segmentFiles) => {
+				segmentFiles.filter(segmentFile => !visibleSegments.has(segmentFile)).forEach((segmentFile) => {
+					fetch(`/segments/${segmentFile}`).then((response) => {
+						return response.json();
+					}).then((segment) => {
+						visibleSegments.add(segmentFile);
+						L.geoJSON(segment, {
+							pointToLayer: function(feature, latlng) {
+								return L.marker(latlng, {icon: greenIcon});
+							},
+						}).addTo(map);
 					});
-				}
+				});
 			});
 		};
 
 		map = L.map('map', {
 			center: [52.02, 8.54],
-			zoom: 12
+			zoom: 20
 		}).addLayer(layer).on("moveend", onMove);
 
 		onMove({ target: map });

@@ -40,7 +40,7 @@ def create_segments(gdf, json_map):
     """
     for segment in json_map:
         # Erstellt eine Bounding Box für das aktuelle Segment
-        bbox = box(segment["min_x"], segment["min_y"], segment["max_x"], segment["max_y"])
+        bbox = box(segment["minX"], segment["minY"], segment["maxX"], segment["maxY"])
         # Selektiert Features, die sich innerhalb der Bounding Box befinden
         segment_gdf = gdf[gdf.intersects(bbox)]
         
@@ -50,7 +50,7 @@ def create_segments(gdf, json_map):
             
             # Speichert das gefilterte Segment als GeoJSON, wenn es Features enthält
             if not filtered_segment_gdf.empty:
-                segment_path = os.path.join(SEGMENTS_DIR, segment["file_name"])
+                segment_path = os.path.join(SEGMENTS_DIR, segment["fileName"])
                 filtered_segment_gdf.to_file(segment_path, driver="GeoJSON")
 
 
@@ -83,11 +83,11 @@ def main():
             rect_maxy = rect_miny + height
             file_name = f'segment_{x+1}_{y+1}.geojson'
             json_map.append({
-                "min_x": rect_minx,
-                "max_x": rect_maxx,
-                "min_y": rect_miny,
-                "max_y": rect_maxy,
-                "file_name": file_name
+                "minX": rect_minx,
+                "maxX": rect_maxx,
+                "minY": rect_miny,
+                "maxY": rect_maxy,
+                "fileName": file_name
             })
 
     # Stellt sicher, dass das Ausgabeverzeichnis existiert
