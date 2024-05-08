@@ -59,7 +59,7 @@ pip install -r requirements.txt
 Anschließend kann der Import gestartet werden:
 
 ```
-python import.py
+python import.py <path-to-geojson-file>
 ```
 
 ## Entwicklung
