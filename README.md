@@ -62,6 +62,21 @@ Anschließend kann der Import gestartet werden:
 python import.py <path-to-geojson-file>
 ```
 
+### Geosplitting
+
+Um die Performance des Karten-Renderns zu verbessern muss die `trees.json`-Datei gesplittet werden.
+Dazu sollte die [Anleitung](./geosplitter/README.md) befolgt werden.
+
+Im Fall der zur Zeit bereitgestellten `trees.json` musste **vor** der Geosplitting eine Bereinigung der Daten erfolgen. 
+Dazu kann das `./geosplitter/filter_geodata.py`-Skript genutzt werden.
+
+Kopiere anschließend die neu erstellten Segmente in das (`./geosplitting/segments/*`) kopiert werden.
+
+```bash
+cp geosplitter/segments static
+```
+
+
 ## Entwicklung
 
 Installiere die Abhängigkeiten, bevor du mit der Entwicklung beginnst:

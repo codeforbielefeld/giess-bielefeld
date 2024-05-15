@@ -30,7 +30,8 @@ Die `requirements.txt` enthält alle notwendigen Python-Pakete, einschließlich:
 ## Verwendung
 
 1. **Vorbereitung der Eingabedaten:** Platziere deine GeoJSON-Datei im `data`-Unterordner. Ändere gegebenenfalls den `DATA_PATH` im Skript, um auf deine spezifische Datei zu verweisen.
-2. **Konfigurieren der Segmentgröße:** Die `GRID_SIZE` Variable im Skript bestimmt, wie viele Segmente pro Dimension erstellt werden. Experimentiere mit verschiedenen Werten, um die optimale Größe für deine Anwendung zu finden.
-3. **Ausführen des Skripts:** Starte das Skript, um die GeoJSON-Datei zu segmentieren und die JSON-Karte zu generieren.
+2. **Bereinigung der Eingabedaten (Falls nötig):** Führe das `filter_geodata.py`-Skript aus. Es wird eine clean_trees.geojson datei erzeugt. Diese kann dann für das Geosplitting verwendet werden.
+3. **Konfigurieren der Segmentgröße:** Die `GRID_SIZE` Variable im Skript bestimmt, wie viele Segmente pro Dimension erstellt werden. Experimentiere mit verschiedenen Werten, um die optimale Größe für deine Anwendung zu finden.
+4. **Ausführen des Skripts:** Starte das Skript, um die GeoJSON-Datei zu segmentieren und die JSON-Karte zu generieren.
 
 Das Ergebnis sind mehrere kleinere GeoJSON-Dateien im `segments`-Ordner und eine `map.json`, die die Segmentdateien mit den Koordinatenbereichen verknüpft.
