@@ -70,7 +70,7 @@ Dazu sollte die [Anleitung](./geosplitter/README.md) befolgt werden.
 Im Fall der zur Zeit bereitgestellten `trees.json` musste **vor** der Geosplitting eine Bereinigung der Daten erfolgen. 
 Dazu kann das `./geosplitter/filter_geodata.py`-Skript genutzt werden.
 
-Kopiere anschließend die neu erstellten Segmente in das (`./geosplitting/segments/*`) kopiert werden.
+Kopiere anschließend die neu erstellten Segmente aus `./geosplitting/segments/*` in das `static`-Verzeichnis.
 
 ```bash
 cp geosplitter/segments static
