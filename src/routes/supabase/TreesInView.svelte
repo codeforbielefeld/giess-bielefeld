@@ -1,24 +1,19 @@
 <script lang="ts">
-	import { supabase } from '../../supabase';
 	import { onMount } from 'svelte';
+	import L from "leaflet";
 	import 'leaflet/dist/leaflet.css';
+	import {MarkerClusterGroup} from  '@tronscanteam/leaflet.markercluster/dist/leaflet.markercluster-src';
+	import '@tronscanteam/leaflet.markercluster/dist/MarkerCluster.css';
+	import './TreesInView.css';
 	import findMatchingSegments from '../../businessLogic/findSegments';
 
 
-	let map: Map;
+	let map: L.Map;
 
 	let visibleSegments = new Set();
 
-	let min_lat = 52.026731;
-	let min_long = 8.5297468;
-
-	let max_lat = 52.0195512;
-	let max_long = 8.5474625;
-
 	onMount(async () => {
-		const L = await import('leaflet');
-
-		const tileURL: string = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/light_nolabels/{z}/{x}/{y}.png"
+		const tileURL: string = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/light_nolabels/{z}/{x}/{y}.png';
 		//const tileURL: string = `https://{s}.basemaps.cartocdn.com/rastertiles/light_labels_under/{z}/{x}/{y}.png`;
 		// const tileURL: string = `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`;
 
@@ -30,16 +25,13 @@
 			minZoom: 0
 		});
 
-
 		// Icon für Bäume
 		const greenIcon = L.icon({
 			iconUrl: 'Baum 2@2x.png',
-			iconSize:     [32, 32], // size of the icon
-			iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
-			popupAnchor:  [0, -12] // point from which the popup should open relative to the iconAnchor
+			iconSize: [32, 32], // size of the icon
+			iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
+			popupAnchor: [0, -12] // point from which the popup should open relative to the iconAnchor
 		});
-
-
 
 		const onMove = (e) => {
 			const bounds = e.target.getBounds();
@@ -48,37 +40,42 @@
 			const minY = bounds._southWest.lat;
 			const minX = bounds._southWest.lng;
 			findMatchingSegments(minX, maxX, minY, maxY).then((segmentFiles) => {
-				segmentFiles.filter(segmentFile => !visibleSegments.has(segmentFile)).forEach((segmentFile) => {
-					fetch(`/segments/${segmentFile}`).then((response) => {
-						return response.json();
-					}).then((segment) => {
-						visibleSegments.add(segmentFile);
-						L.geoJSON(segment, {
-							pointToLayer: function(feature, latlng) {
-								return L.marker(latlng, {icon: greenIcon});
-							},
-						}).addTo(map);
+				segmentFiles
+					.filter((segmentFile) => !visibleSegments.has(segmentFile))
+					.forEach((segmentFile) => {
+						fetch(`/segments/${segmentFile}`)
+							.then((response) => {
+								return response.json();
+							})
+							.then((segment) => {
+								visibleSegments.add(segmentFile);
+								const markers = new MarkerClusterGroup({
+									spiderfyOnMaxZoom: true,
+									showCoverageOnHover: true,
+									zoomToBoundsOnClick: true,
+									disableClusteringAtZoom: 20,
+								}).addTo(map);
+								L.geoJSON(segment, {
+									pointToLayer: function(feature, latlng) {
+										return L.marker(latlng, { icon: greenIcon });
+									}
+								}).addTo(markers);
+							});
 					});
-				});
 			});
 		};
 
 		map = L.map('map', {
 			center: [52.02, 8.54],
 			zoom: 20
-		}).addLayer(layer).on("moveend", onMove);
+		})
+			.addLayer(layer)
+			.on('moveend', onMove);
+
 
 		onMove({ target: map });
-
-
 	});
 
-
-	const getTreesInView = () => {
-		return supabase.rpc('trees_in_view', {
-			min_lat, min_long, max_lat, max_long
-		});
-	};
 </script>
 
 <!--<div>-->

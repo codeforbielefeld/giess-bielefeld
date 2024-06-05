@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
+
 	import NearbyTrees from './NearbyTrees.svelte';
 	import TreesInView from './TreesInView.svelte';
+
 </script>
 
 <div>
