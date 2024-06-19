@@ -1,0 +1,51 @@
+.marker-cluster-small {
+    background-color: #66b17b;
+    /*border: 3px solid rgba(102, 177, 123, 0.5);*/
+}
+
+.marker-cluster-medium {
+    background-color: #33974f;
+    /*border: 5px solid rgba(51, 151, 79, 0.5);*/
+}
+
+.marker-cluster-large {
+    background-color: #007c23;
+    /*border: 10px solid rgba(0, 124, 35, 0.5);*/
+}
+
+.marker-cluster-tree {
+    background: #007c23;
+    outline: 4px solid rgba(0, 124, 35, 0.5);
+    height: 10px;
+    width: 10px;
+}
+
+/* IE 6-8 fallback colors */
+.leaflet-oldie .marker-cluster-small {
+    background-color: #66b17b;
+}
+
+.leaflet-oldie .marker-cluster-small div {
+    background-color: #66b17b;
+}
+
+.leaflet-oldie .marker-cluster-medium {
+    background-color: #33974f;
+}
+
+.leaflet-oldie .marker-cluster-medium div {
+    background-color: #33974f;
+}
+
+.leaflet-oldie .marker-cluster-large {
+    background-color: #007c23;
+}
+
+.leaflet-oldie .marker-cluster-large div {
+    background-color: #007c23;
+}
+
+.marker-cluster {
+    background-clip: padding-box;
+    border-radius: 50%;
+}
