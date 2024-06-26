@@ -54,7 +54,7 @@ async function findMatchingSegments(minX: number, maxX: number, minY: number, ma
 	const matchingSegments = mapData.filter((segment) => intersects(segment, viewport));
 
 	// Extrahiere die Dateinamen der überschneidenden Segmente und gib sie zurück.
-	return matchingSegments.map((segment) => segment.fileName);
+	return matchingSegments.filter((segment) => segment.fileName).map((segment) => segment.fileName);
 }
 
 export default findMatchingSegments;

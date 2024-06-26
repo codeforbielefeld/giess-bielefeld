@@ -53,3 +53,5 @@ grant delete, insert, references, select, trigger, truncate, update on public.tr
 grant delete, insert, references, select, trigger, truncate, update on public.trees to authenticated;
 
 grant delete, insert, references, select, trigger, truncate, update on public.trees to service_role;
+
+create policy "Enable read access for all users" on "public"."trees" as permissive for select to public using (true);

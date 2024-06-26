@@ -53,6 +53,13 @@ def create_segments(gdf, json_map):
                 segment_path = os.path.join(SEGMENTS_DIR, segment["fileName"])
                 filtered_segment_gdf.to_file(segment_path, driver="GeoJSON")
 
+        else:
+            json_map[json_map.index(segment)]['fileName'] = None
+    return json_map
+
+
+
+
 
 def main():
     # Lädt die ursprünglichen GeoJSON-Daten in eine GeoDataFrame
@@ -81,7 +88,7 @@ def main():
             rect_miny = miny + y * height
             rect_maxx = rect_minx + width
             rect_maxy = rect_miny + height
-            file_name = f'segment_{x+1}_{y+1}.geojson'
+            file_name = f'segment_{x+1:02}_{y+1:02}.geojson'
             json_map.append({
                 "minX": rect_minx,
                 "maxX": rect_maxx,
@@ -94,7 +101,7 @@ def main():
     os.makedirs(SEGMENTS_DIR, exist_ok=True)
     
     # Ruft die Funktion zum Erstellen der Segment-Dateien auf
-    create_segments(gdf, json_map)
+    json_map = create_segments(gdf, json_map)
 
     # Speichert die Karte der Segmente als JSON
     map_path = os.path.join(SEGMENTS_DIR, 'map.json')
