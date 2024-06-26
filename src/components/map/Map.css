@@ -1,22 +1,13 @@
-.marker-cluster-small {
-    background-color: #66b17b;
+.marker-cluster{
+    background-color: #66b17b6c;
     /*border: 3px solid rgba(102, 177, 123, 0.5);*/
 }
 
-.marker-cluster-medium {
-    background-color: #33974f;
-    /*border: 5px solid rgba(51, 151, 79, 0.5);*/
-}
-
-.marker-cluster-large {
-    background-color: #007c23;
-    /*border: 10px solid rgba(0, 124, 35, 0.5);*/
-}
 
 .marker-cluster-tree {
-    background: #007c23;
-    outline: 4px solid rgba(0, 124, 35, 0.5);
+    background: #66b17b;
     height: 10px;
+    
     width: 10px;
 }
 
