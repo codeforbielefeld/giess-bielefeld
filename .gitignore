@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-
 /build
 /.svelte-kit
 /package
@@ -19,4 +18,3 @@ vite.config.ts.timestamp-*
 
 /import/data
 /import/venv
-
