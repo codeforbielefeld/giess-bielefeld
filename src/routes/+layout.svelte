@@ -7,7 +7,9 @@
 	<title>Gieß Bielefeld</title>
 </svelte:head>
 
-<Map />
-<div class="absolute bottom-0 z-[700]">
-	<slot />
+<div class="flex">
+	<Map />
+	<div class="z-[700]">
+		<slot />
+	</div>
 </div>

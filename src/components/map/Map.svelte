@@ -2,11 +2,13 @@
 	import { onMount } from 'svelte';
 	import L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
+	import { goto } from '$app/navigation';
 
 	import {MarkerClusterGroup} from  '@tronscanteam/leaflet.markercluster/dist/leaflet.markercluster-src';
 	import '@tronscanteam/leaflet.markercluster/dist/MarkerCluster.css';
 	import './Map.css';
 	import findMatchingSegments from '../../businessLogic/findSegments';
+	import Layout from '../../routes/+layout.svelte';
 
 
 	const id = 'map-' + Math.random().toString(36).substring(2, 9);
@@ -14,6 +16,11 @@
 	let map: L.Map;
 
 	let visibleSegments = new Set();
+	
+	const iconDefaults = {
+							html: '',
+							className: 'marker-cluster'
+						}
 
 	// Icon für Bäume
 	//const greenIcon = L.divIcon({
@@ -52,42 +59,21 @@
 							zoomToBoundsOnClick: true,
 							disableClusteringAtZoom: 20,
 							iconCreateFunction: (cluster: unknown) => {
-								if (cluster.getChildCount() > 1000) {
-									console.log("Found > 100 group: ", cluster, cluster.getChildCount())
-									return L.divIcon({
-										html: '',
-										className: 'marker-cluster',
-										iconSize: L.point(100, 100)
-									});
-								} else if (cluster.getChildCount() > 500) {
-									console.log("Found > 100 group: ", cluster, cluster.getChildCount())
-									return L.divIcon({
-										html: '',
-										className: 'marker-cluster',
-										iconSize: L.point(50, 50)
-									});
-								} 
-								else if (cluster.getChildCount() > 100) {
-									console.log("found group > 50 with count: ", cluster, cluster.getChildCount())
-									return L.divIcon({
-										html: '',
-										className: 'marker-cluster',
-										iconSize: L.point(10, 10)
-									});
-								} else {
-									console.log("found else cluster group: ", cluster, cluster.getChildCount())
-									return L.divIcon({
-										html: '',
-										className: 'marker-cluster',
-										iconSize: L.point(20, 20)
-									});
-								}
-								// return L.divIcon({ html: '', className: 'marker-cluster marker-cluster-small', iconSize: L.point(70, 40)});
+								const childCount = cluster.getChildCount()
+								const iconSize = childCount > 1000 ? 100 : childCount > 500 ? 50 : childCount > 100 ? 10 : 20
+								return L.divIcon({
+									...iconDefaults,
+									iconSize : L.point(iconSize, iconSize)
+								})
 							}
 						}).addTo(map);
 						L.geoJSON(segment, {
 							pointToLayer: function(feature, latlng) {
-								return L.marker(latlng, { icon: greenIcon });
+								return L.marker(latlng, { icon: greenIcon })
+										.on("click", function(e){
+											let treeId = e.sourceTarget.feature.properties.Standort_N;
+											goto(`/trees/${treeId}`)
+								});
 							}
 						}).addTo(markers);
 					});
@@ -120,4 +106,5 @@
 
 </script>
 
-<div {id} class="w-full h-full" />
+
+<div {id} class="w-full h-full absolute top-0 left-0" />
