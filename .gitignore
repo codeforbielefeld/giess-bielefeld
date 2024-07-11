@@ -4,6 +4,7 @@ node_modules
 /.svelte-kit
 /package
 /geosplitter/venv
+/geosplitter/.ipynb_checkpoints
 .env
 .env.*
 !.env.example
