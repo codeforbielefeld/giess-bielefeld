@@ -20,7 +20,7 @@ def create_filtered_gdf(segment_gdf):
     """
 
     # Definiere die gewünschten Eigenschaften
-    desired_properties = ['Baumart', 'Kronendurc', 'Standort_N', 'Objekt_Bez']
+    desired_properties = ['oid', 'Baumart', 'Kronendurc', 'Standort_N', 'Objekt_Bez']
     
     # Prüfe, welche der gewünschten Eigenschaften in den Daten vorhanden sind
     available_properties = [prop for prop in desired_properties if prop in segment_gdf.columns]
