@@ -35,6 +35,15 @@
 	 	popupAnchor: [0, -10] // point from which the popup should open relative to the iconAnchor
 	});
 
+	const greenIconClicked = L.icon({
+	 	iconUrl: '/Tree_Marker_Clicked.svg',
+	 	iconSize: [15, 15], // size of the icon
+	 	iconAnchor: [10, 10], // point of the icon which will correspond to marker's location
+	 	popupAnchor: [0, -10] // point from which the popup should open relative to the iconAnchor
+	});
+
+	let last_clicked : unknown = null;
+
 	const onMove = (e: unknown) => {
 		setTimeout(() => {
 
@@ -71,8 +80,13 @@
 							pointToLayer: function(feature, latlng) {
 								return L.marker(latlng, { icon: greenIcon })
 										.on("click", function(e){
+											if ( !! last_clicked) {
+												last_clicked._icon.src = '/Tree_Marker.svg';
+											}
+											e.target._icon.src = '/Tree_Marker_Clicked.svg';
 											let treeId = e.sourceTarget.feature.properties.Standort_N;
-											goto(`/trees/${treeId}`)
+											goto(`/trees/${treeId}`);
+											last_clicked = e.target;
 								});
 							}
 						}).addTo(markers);
