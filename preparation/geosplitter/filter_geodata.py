@@ -7,7 +7,7 @@ MIN_Y = 5000000
 
 # Basispfad und Pfad zur GeoJSON-Datei
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_PATH = os.path.join(BASE_DIR, 'data', 'trees.geojson')
+DATA_PATH = os.path.join(BASE_DIR, 'data', 'trees_with_oids.geojson')
 CLEAN_DATA_PATH = os.path.join(BASE_DIR, 'data', 'clean_trees.geojson')
 
 def filter_data(gdf):

@@ -1,21 +1,24 @@
 .DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
-/geosplitter/venv
-/geosplitter/.ipynb_checkpoints
-.env
-.env.*
-!.env.example
-.vercel
-.output
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
+frontend/node_modules
+frontend/build
+frontend/.svelte-kit
+frontend/.env
+!frontend/.env.example
+frontend/.vercel
+frontend/.output
+frontend/vite.config.js.timestamp-*
+frontend/vite.config.ts.timestamp-*
 
 # Nicht die Geodaten pushen, den Ordner mit den Segmenten schon!
-/static/segments/*
-!/static/segments/
+frontend/static/segments/
 
-/import/data
-/import/venv
+preparation/geosplitter/venv
+preparation/geosplitter/.ipynb_checkpoints
+preparation/import/data
+preparation/import/venv
+preparation/geosplitter/data
+preparation/geosplitter/segments
+
+
+segments/
+.DS_Store
