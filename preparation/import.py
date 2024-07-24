@@ -7,7 +7,7 @@ from shapely import wkt, Point
 import pyproj
 import sys
 
-load_dotenv("../.env")
+load_dotenv("../frontend/.env")
 
 url: str = os.environ.get("VITE_SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")

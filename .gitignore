@@ -12,13 +12,7 @@ frontend/vite.config.ts.timestamp-*
 # Nicht die Geodaten pushen, den Ordner mit den Segmenten schon!
 frontend/static/segments/
 
-preparation/geosplitter/venv
-preparation/geosplitter/.ipynb_checkpoints
-preparation/import/data
-preparation/import/venv
-preparation/geosplitter/data
-preparation/geosplitter/segments
-
-
-segments/
-.DS_Store
+preparation/.ipynb_checkpoints
+preparation/data
+preparation/segments
+preparation/venv
