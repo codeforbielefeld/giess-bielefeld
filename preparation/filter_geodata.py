@@ -1,40 +1,54 @@
+import click
 import geopandas as gpd
 import os
 
-# Definiert die Grenzwerte
-MIN_X = 400000
-MIN_Y = 5000000
-
-# Basispfad und Pfad zur GeoJSON-Datei
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_PATH = os.path.join(BASE_DIR, 'data', 'trees_with_oids.geojson')
-CLEAN_DATA_PATH = os.path.join(BASE_DIR, 'data', 'clean_trees.geojson')
-
-def filter_data(gdf):
+def load_geojson(file_path):
     """
-    Filtert Einträge, deren Koordinaten unterhalb der definierten Grenzen liegen,
-    und gibt diese Einträge im Terminal aus.
+    Lädt eine GeoJSON-Datei und gibt ein GeoDataFrame zurück.
     """
-    # Filtere Einträge basierend auf den Grenzwerten
-    outliers = gdf[(gdf.geometry.x < MIN_X) | (gdf.geometry.y < MIN_Y)]
-    clean_data = gdf[~((gdf.geometry.x < MIN_X) | (gdf.geometry.y < MIN_Y))]
-    
-    # Gib die Ausreißer im Terminal aus
-    print("Ausreißer gefunden:")
-    for index, row in outliers.iterrows():
-        print(f"Index: {index}, X: {row.geometry.x}, Y: {row.geometry.y}")
-    
-    # Speichere die bereinigten Daten als neue GeoJSON-Datei
-    clean_data.to_file(CLEAN_DATA_PATH, driver='GeoJSON')
-    
-    print(f"\nBereinigte Daten wurden gespeichert unter: {CLEAN_DATA_PATH}")
+    return gpd.read_file(file_path)
 
-def main():
-    # Lade die GeoJSON-Daten
-    gdf = gpd.read_file(DATA_PATH)
+def filter_invalid_coordinates(gdf):
+    """
+    Filtert fehlerhafte Werte in den X- und Y-Koordinaten (negative Werte).
+    """
+    valid_gdf = gdf[(gdf.geometry.x > 0) & (gdf.geometry.y > 0)]
+    return valid_gdf
 
-    # Filtere die Daten und verarbeite die Ausreißer
-    filter_data(gdf)
+def save_geojson(gdf, output_path):
+    """
+    Speichert das GeoDataFrame als GeoJSON-Datei.
+    """
+    gdf.to_file(output_path, driver='GeoJSON')
+   
+@click.command(help="Filter GeoJSON file and remove invalid coordinates.")
+@click.option('-i', '--input_file', required=True, type=str, help="Name of the input GeoJSON file in the 'data' directory")
+@click.option('-o', '--output_file', required=True, type=str, help="Name of the output GeoJSON file in the 'data' directory")
+def main(input_file, output_file):
+    """
+    Filter GeoJSON file and remove invalid coordinates.
+
+    :param input_file: Name of the input GeoJSON file in the 'data' directory
+    :param output_file: Name of the output GeoJSON file in the 'data' directory
+    """
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    # Pfad zur Eingabe-GeoJSON-Datei
+    INPUT_PATH = os.path.join(BASE_DIR, 'data', input_file)
+    
+    # Pfad zur Ausgabe-GeoJSON-Datei
+    OUTPUT_PATH = os.path.join(BASE_DIR, 'data', output_file)
+
+    # Lade die GeoJSON-Datei
+    gdf = load_geojson(INPUT_PATH)
+
+    # Filtere fehlerhafte Koordinaten
+    valid_gdf = filter_invalid_coordinates(gdf)
+
+    # Speichere die bereinigte GeoJSON-Datei
+    save_geojson(valid_gdf, OUTPUT_PATH)
+
+    print(f"Bereinigte GeoJSON-Datei wurde gespeichert unter: {OUTPUT_PATH}")
 
 if __name__ == '__main__':
     main()
