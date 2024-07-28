@@ -16,3 +16,4 @@ preparation/.ipynb_checkpoints
 preparation/data
 preparation/segments
 preparation/venv
+preparation/__pycache__

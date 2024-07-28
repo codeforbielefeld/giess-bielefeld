@@ -22,33 +22,30 @@ def save_geojson(gdf, output_path):
     gdf.to_file(output_path, driver='GeoJSON')
    
 @click.command(help="Filter GeoJSON file and remove invalid coordinates.")
-@click.option('-i', '--input_file', required=True, type=str, help="Name of the input GeoJSON file in the 'data' directory")
-@click.option('-o', '--output_file', required=True, type=str, help="Name of the output GeoJSON file in the 'data' directory")
+@click.option('-i', '--input_file', required=True, type=str, help="Name of the input GeoJSON file")
+@click.option('-o', '--output_file', required=False, type=str, help="Name of the output GeoJSON file")
 def main(input_file, output_file):
     """
     Filter GeoJSON file and remove invalid coordinates.
 
-    :param input_file: Name of the input GeoJSON file in the 'data' directory
-    :param output_file: Name of the output GeoJSON file in the 'data' directory
+    :param input_file: Name of the input GeoJSON file 
+    :param output_file: Name of the output GeoJSON file
     """
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-    # Pfad zur Eingabe-GeoJSON-Datei
-    INPUT_PATH = os.path.join(BASE_DIR, 'data', input_file)
     
-    # Pfad zur Ausgabe-GeoJSON-Datei
-    OUTPUT_PATH = os.path.join(BASE_DIR, 'data', output_file)
-
     # Lade die GeoJSON-Datei
-    gdf = load_geojson(INPUT_PATH)
+    gdf = load_geojson(input_file)
 
     # Filtere fehlerhafte Koordinaten
     valid_gdf = filter_invalid_coordinates(gdf)
 
-    # Speichere die bereinigte GeoJSON-Datei
-    save_geojson(valid_gdf, OUTPUT_PATH)
-
-    print(f"Bereinigte GeoJSON-Datei wurde gespeichert unter: {OUTPUT_PATH}")
+    # Wenn der Ausgabe-Pfad angegeben ist, speichere die bereinigte GeoJSON-Datei
+    if output_file:
+        # Speichere die bereinigte GeoJSON-Datei
+        save_geojson(valid_gdf, output_file)
+        print(f"Bereinigte GeoJSON-Datei wurde gespeichert unter: {output_file}")
+    else:
+        # Ansonsten gib das bereinigte GeoDataFrame zurück
+        return valid_gdf
 
 if __name__ == '__main__':
     main()
