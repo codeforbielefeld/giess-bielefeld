@@ -19,7 +19,7 @@ def filter_properties(gdf, desired_properties):
 
 @click.command(help="Filter GeoJSON file, remove invalid coordinates, and insert OIDs from a CSV file.")
 @click.option('-i', '--input_file', required=True, type=str, help="Name of the input GeoJSON file")
-@click.option('-c', '--csv_file', required=True, type=str, help="Name of the input CSV file with OIDs")
+@click.option('-c', '--csv_file', required=False, type=str, help="Name of the input CSV file with OIDs")
 @click.option('-o', '--output_file', required=True, type=str, help="Name of the output GeoJSON file")
 def main(input_file, csv_file, output_file):
     """
@@ -30,7 +30,7 @@ def main(input_file, csv_file, output_file):
     :param output_file: Name of the output GeoJSON file
     """
 
-    # Schritt 1: Diie GeoJSON laden und Eigenschaften reduzieren
+    # Schritt 1: Die GeoJSON laden und Eigenschaften reduzieren
     gdf = load_geojson(input_file)
 
     # Definiere die gewünschten Eigenschaften
@@ -42,9 +42,12 @@ def main(input_file, csv_file, output_file):
     # Schritt 2: Alle ungültigen Koordinaten entfernen
     valid_gdf = filter_invalid_coordinates(filtered_gdf)
     
-    # Schritt 3: Insert OIDs into the filtered GeoJSON file using data from the CSV file
-    df_oids = pd.read_csv(csv_file, sep=";")
-    result_gdf = insert_oids(valid_gdf, df_oids)
+    # Schritt 3: Wenn csv_file angegeben ist, die OIDs einfügen
+    if csv_file:
+        df_oids = pd.read_csv(csv_file, sep=";")
+        result_gdf = insert_oids(valid_gdf, df_oids)
+    else:
+        result_gdf = valid_gdf
 
     # Schritt 4: Speichern des endgültigen GeoDataFrame
     save_geojson(result_gdf, output_file)
