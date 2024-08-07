@@ -2,6 +2,7 @@ import geopandas as gpd
 import json
 import os
 from shapely.geometry import box
+from tqdm import tqdm
 
 # Definiert Pfade für Eingabe- und Ausgabedaten sowie Basispfad der Ausführung
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +39,7 @@ def create_segments(gdf, json_map):
     :param gdf: GeoDataFrame der originalen GeoJSON-Daten
     :param json_map: Liste von Dictionaries, die Rastersegmente und Dateinamen definieren
     """
-    for segment in json_map:
+    for segment in tqdm(json_map):
         # Erstellt eine Bounding Box für das aktuelle Segment
         bbox = box(segment["minX"], segment["minY"], segment["maxX"], segment["maxY"])
         # Selektiert Features, die sich innerhalb der Bounding Box befinden
