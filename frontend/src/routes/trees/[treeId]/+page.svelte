@@ -8,7 +8,7 @@
 <div class="mx-auto">
 <div class="container">
 
-	<div class="bg-white">
+	<div >
 		<p>Hallo Baum {data.treeId}</p>
 	</div>
 

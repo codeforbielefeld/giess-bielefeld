@@ -1,6 +1,6 @@
 <script lang="ts">
 </script>
 
-<div class="bg-white">
+<div >
 	Hallo Welt
 </div>

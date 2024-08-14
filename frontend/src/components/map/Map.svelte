@@ -121,4 +121,4 @@
 </script>
 
 
-<div {id} class="w-full h-full absolute top-0 left-0" />
+<div {id} class="w-full h-[100%] top-0 left-0" />

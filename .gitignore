@@ -2,8 +2,6 @@
 frontend/node_modules
 frontend/build
 frontend/.svelte-kit
-frontend/.env
-!frontend/.env.example
 frontend/.vercel
 frontend/.output
 frontend/vite.config.js.timestamp-*
@@ -17,3 +15,9 @@ preparation/data
 preparation/segments
 preparation/venv
 preparation/__pycache__
+
+# Hier liegen die Daten, die nicht gepusht werden sollen
+data/
+
+.env
+!env.example

@@ -7,9 +7,14 @@
 	<title>Gieß Bielefeld</title>
 </svelte:head>
 
-<div class="flex">
-	<Map />
-	<div class="z-[700]">
-		<slot />
+<div class="flex flex-col w-full h-full">
+	<div class="flex flex-col grow">
+		<div>
+			<slot />			
+		</div>
+			<Map />
 	</div>
+	<footer class="z-[700] shrink-0 min-h-16 bg-red-300 opacity-50">
+		FUUUSS TOLL
+	</footer>
 </div>
