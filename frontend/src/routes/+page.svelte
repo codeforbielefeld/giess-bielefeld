@@ -1,6 +1,6 @@
 <script lang="ts">
 </script>
 
-<div >
-	Hallo Welt
+<div class="hidden">
+
 </div>

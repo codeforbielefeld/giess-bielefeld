@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import L from 'leaflet';
+	import L, { popup } from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
 	import { goto } from '$app/navigation';
 
@@ -80,13 +80,18 @@
 							pointToLayer: function(feature, latlng) {
 								return L.marker(latlng, { icon: greenIcon })
 										.on("click", function(e){
-											if ( !! last_clicked) {
+											if (last_clicked != null && last_clicked._icon != null) {
+												
 												last_clicked._icon.src = '/Tree_Marker.svg';
 											}
 											e.target._icon.src = '/Tree_Marker_Clicked.svg';
 											let treeId = e.sourceTarget.feature.properties.Standort_N;
 											goto(`/trees/${treeId}`);
-											last_clicked = e.target;
+											if(e.target._icon != null){
+												last_clicked = e.target;
+											}
+								
+
 								});
 							}
 						}).addTo(markers);
@@ -116,6 +121,14 @@
 
 
 		onMove({ target: map });
+		
+		window.addEventListener("click", function(e){
+			if(e.target && !e.target.className.includes("leaflet-marker-icon")){
+				console.log("bin im e logger", e.target, e.target._icon)
+				goto("/")
+			}
+		})
+
 	});
 
 </script>

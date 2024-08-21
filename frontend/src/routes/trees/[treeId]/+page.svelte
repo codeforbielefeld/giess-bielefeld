@@ -8,7 +8,7 @@
 <div class="mx-auto">
 <div class="container">
 
-	<div >
+	<div class="absolute w-full h-[85%] bottom-0 self-center justify-center z-[700] bg-white">
 		<p>Hallo Baum {data.treeId}</p>
 	</div>
 

@@ -9,12 +9,14 @@
 
 <div class="flex flex-col w-full h-full">
 	<div class="flex flex-col grow">
-		<div>
+
+		<div >
 			<slot />			
 		</div>
+
 			<Map />
 	</div>
-	<footer class="z-[700] shrink-0 min-h-16 bg-red-300 opacity-50">
-		FUUUSS TOLL
+	<footer class="z-[700] shrink-0 min-h-[10%] bg-red-300 opacity-50">
+		Navigations Icons
 	</footer>
 </div>
