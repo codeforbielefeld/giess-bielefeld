@@ -121,10 +121,11 @@
 
 
 		onMove({ target: map });
+
+		const mapElement = document.querySelector("#"+id)
 		
-		window.addEventListener("click", function(e){
+		mapElement?.addEventListener("click", function(e){
 			if(e.target && !e.target.className.includes("leaflet-marker-icon")){
-				console.log("bin im e logger", e.target, e.target._icon)
 				goto("/")
 			}
 		})
