@@ -13,7 +13,6 @@ frontend/static/segments/
 preparation/.ipynb_checkpoints
 preparation/data
 preparation/input
-preparation/input_analysis
 preparation/venv
 preparation/__pycache__
 

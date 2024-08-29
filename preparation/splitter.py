@@ -32,14 +32,14 @@ def create_filtered_gdf(segment_gdf):
     return filtered_data
 
 
-def create_segments(gdf, json_map):
+def create_segments(gdf, json_index):
     """
     Erstellt segmentierte GeoJSON-Dateien basierend auf den definierten Rastersegmenten
     
     :param gdf: GeoDataFrame der originalen GeoJSON-Daten
-    :param json_map: Liste von Dictionaries, die Rastersegmente und Dateinamen definieren
+    :param json_index: Liste von Dictionaries, die Rastersegmente und Dateinamen definieren
     """
-    for segment in tqdm(json_map):
+    for segment in tqdm(json_index):
         # Erstellt eine Bounding Box für das aktuelle Segment
         bbox = box(segment["minX"], segment["minY"], segment["maxX"], segment["maxY"])
         # Selektiert Features, die sich innerhalb der Bounding Box befinden
@@ -55,8 +55,8 @@ def create_segments(gdf, json_map):
                 filtered_segment_gdf.to_file(segment_path, driver="GeoJSON")
 
         else:
-            json_map[json_map.index(segment)]['fileName'] = None
-    return json_map
+            json_index[json_index.index(segment)]['fileName'] = None
+    return json_index
 
 
 def main():
@@ -76,8 +76,8 @@ def main():
     width = (maxX - minX) / GRID_SIZE
     height = (maxY - minY) / GRID_SIZE
 
-    # Initialisiert die Liste, die die Karte der Segmente speichert
-    json_map = []
+    # Initialisiert den Index, der die Karte der Segmente speichert
+    json_index = []
 
     # Generiert die Segmente basierend auf dem Raster
     for x in range(GRID_SIZE):
@@ -87,7 +87,7 @@ def main():
             rect_maxX = rect_minX + width
             rect_maxY = rect_minY + height
             file_name = f'segment_{x+1:02}_{y+1:02}.geojson'
-            json_map.append({
+            json_index.append({
                 "minX": rect_minX,
                 "maxX": rect_maxX,
                 "minY": rect_minY,
@@ -99,12 +99,12 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
     # Ruft die Funktion zum Erstellen der Segment-Dateien auf
-    json_map = create_segments(gdf, json_map)
+    json_index = create_segments(gdf, json_index)
 
     # Speichert die Index-Datei für die Segmente als JSON
-    map_path = os.path.join(OUTPUT_DIR, 'segments_index.json')
-    with open(map_path, 'w') as f:
-        json.dump(json_map, f)
+    index_path = os.path.join(OUTPUT_DIR, 'segments_index.json')
+    with open(index_path, 'w') as f:
+        json.dump(json_index, f)
 
 if __name__ == '__main__':
     main()
