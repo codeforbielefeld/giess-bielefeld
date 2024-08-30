@@ -67,16 +67,14 @@ und anschließend mit Klick auf `Save policy` speichern.
 
 ### Datenimport
 
-Für den Import der Daten wird die `trees.json`-Datei benötigt, die aktuell nicht Bestandteil dieses Repositorys ist!
+- Für den Import der Daten wird die `trees.json`-Datei benötigt, die aktuell nicht Bestandteil dieses Repositorys ist!
+- Diese Datei muss im `preparation`-Verzeichnis im `input`-Unterverzeichnis abgelegt werden
+- Anschließend kann der Import mit dem `import`-Skript im `preparation`-Verzeichnis gestartet werden
 
-
-Diese Datei muss im `import`-Verzeichnis abgelegt werden.
-Anschließend kann der Import mit dem `import`-Skript im `import`-Ordner gestartet werden.
 Da weitere Bibliotheken erforderlich sind, um die Daten zu importieren, empfiehlt es sich, eine virtuelle
-Python-Umgebung zu erstellen und die erforderlichen Bibliotheken zu installieren:
+Python-Umgebung im `preparation`-Ordner zu erstellen und die erforderlichen Bibliotheken zu installieren:
 
 ```
-cd import
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -91,15 +89,13 @@ python import.py <path-to-geojson-file>
 ### Geosplitting
 
 Um die Performance des Karten-Renderns zu verbessern muss die `trees.json`-Datei gesplittet werden.
-Dazu sollte die [Anleitung](./geosplitter/README.md) befolgt werden.
+Dazu sollte die [Anleitung](./preparation/README.md) befolgt werden.
 
-Im Fall der zur Zeit bereitgestellten `trees.json` musste **vor** der Geosplitting eine Bereinigung der Daten erfolgen. 
-Dazu kann das `./geosplitter/filter_geodata.py`-Skript genutzt werden.
-
-Kopiere anschließend die neu erstellten Segmente aus `./geosplitting/segments/*` in das `static`-Verzeichnis.
+Kopiere anschließend die neu erstellten Segmente aus `./preparation/segments/*` in das `static`-Verzeichnis in `frontend`.
 
 ```bash
-cp geosplitter/segments static
+python preparation/splitter.py
+cp -r preparation/segments frontend/static
 ```
 
 

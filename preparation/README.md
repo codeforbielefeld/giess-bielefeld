@@ -30,4 +30,4 @@ Die `requirements.txt` enthält alle notwendigen Python-Pakete, einschließlich:
 ## Verwendung
 
 1. **Vorbereitung der Eingabedaten:** Platziere deine GeoJSON-Datei im `input`-Unterordner. Es wird erwartet, dass sie `trees.geojson` heißt; ändere gegebenenfalls den Wert von `INPUT_PATH` im `splitter.py` Skript, um auf deine spezifische Datei zu verweisen.
-2. **Ausführen des `splitter` - Skripts:** Starte das `splitter.py`-Skript, um die GeoJSON-Datei zu segmentieren und die Index-Datei zu generieren. Standardmäßig wird ein neuer Unterordner `data` erzeugt mit mehreren kleinen GeoJSON-Dateien sowie eine `segments_index.json`, die die Segmentdateien mit den Koordinatenbereichen verknüpft.
+2. **Ausführen des `splitter` - Skripts:** Starte das `splitter.py`-Skript, um die GeoJSON-Datei zu segmentieren und die Index-Datei zu generieren. Standardmäßig wird ein neuer Unterordner `segments` erzeugt mit mehreren kleinen GeoJSON-Dateien sowie eine `segments_index.json`, die die Segmentdateien mit den Koordinatenbereichen verknüpft.
