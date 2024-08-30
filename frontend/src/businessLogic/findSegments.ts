@@ -42,7 +42,7 @@ function intersects(segment: MapDataSegmentType, viewport: ViewportType) {
 async function findMatchingSegments(minX: number, maxX: number, minY: number, maxY: number) {
 	// Synchrones Einlesen der map.json, um die Liste der Segmente zu erhalten.
 	if (mapData.length === 0) {
-		await fetch('/segments/map.json')
+		await fetch('/segments/segments_index.json')
 			.then((response) => response.json())
 			.then((data) => (mapData = data));
 	}

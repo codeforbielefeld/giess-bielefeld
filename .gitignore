@@ -7,17 +7,11 @@ frontend/.output
 frontend/vite.config.js.timestamp-*
 frontend/vite.config.ts.timestamp-*
 
-# Nicht die Geodaten pushen, den Ordner mit den Segmenten schon!
 frontend/static/segments/
-
-preparation/.ipynb_checkpoints
-preparation/data
+preparation/segments
 preparation/input
 preparation/venv
 preparation/__pycache__
-
-# Hier liegen die Daten, die nicht gepusht werden sollen
-data/
 
 .env
 !env.example
