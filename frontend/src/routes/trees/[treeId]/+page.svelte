@@ -63,7 +63,7 @@
 <div class="mx-auto">
 <div class="container">
 
-	<div class="absolute w-full h-[85%] bottom-0 self-center justify-center z-[700] bg-white">
+	<div class="absolute w-full h-[85%] bottom-0 self-center justify-center z-[1100] bg-white">
 		<p>{art_de}, ALTER</p>
 		<Accordion>
 			<AccordionItem key='a'>

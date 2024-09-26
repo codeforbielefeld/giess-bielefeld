@@ -85,7 +85,7 @@
 												last_clicked._icon.src = '/Tree_Marker.svg';
 											}
 											e.target._icon.src = '/Tree_Marker_Clicked.svg';
-											let treeId = e.sourceTarget.feature.properties.pitID;
+											let treeId = e.sourceTarget.feature.properties.uuid;
 											goto(`/trees/${treeId}`);
 											if(e.target._icon != null){
 												last_clicked = e.target;
