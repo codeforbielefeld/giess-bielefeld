@@ -59,10 +59,3 @@
 			
 	</footer>
 </div>
-
-<style>
-	.buttonClass{
-		width: 10%;
-		height:200px;
-	}
-</style>
