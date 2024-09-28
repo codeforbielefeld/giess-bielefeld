@@ -1,0 +1,86 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { supabase } from '../../../supabase';
+	import { goto } from '$app/navigation';
+
+	import PrimaryButton from '../../../components/button/PrimaryButton.svelte';
+	import Dialog from '../../../components/dialog/Dialog.svelte';
+	import SecondaryButton from '../../../components/button/SecondaryButton.svelte';
+	import InputField from '../../../components/input/InputField.svelte';
+	import EmailField from '../../../components/input/EmailField.svelte';
+	import PasswordField from '../../../components/input/PasswordField.svelte';
+	import LinkButton from '../../../components/button/LinkButton.svelte';
+
+	let email: string = 'daniel@barooney.com';
+	let password: string = '12345678';
+	let errorCode: string | undefined = undefined;
+	$: email, password, errorCode;
+
+	let loading: boolean = false;
+
+	onMount(() => {
+		const { data } = supabase.auth.onAuthStateChange((event, session) => {
+			console.log(event, session);
+
+			if (event === 'INITIAL_SESSION') {
+				// handle initial session
+			} else if (event === 'SIGNED_IN') {
+				// handle sign in event
+			} else if (event === 'SIGNED_OUT') {
+				// handle sign out event
+			} else if (event === 'PASSWORD_RECOVERY') {
+				// handle password recovery event
+			} else if (event === 'TOKEN_REFRESHED') {
+				// handle token refreshed event
+			} else if (event === 'USER_UPDATED') {
+				// handle user updated event
+			}
+		});
+
+		// call unsubscribe to remove the callback
+		data.subscription.unsubscribe();
+	});
+
+	const handleLogin = async (e: any) => {
+		e.preventDefault();
+		console.log('handleLogin');
+
+		loading = true;
+		const { data, error } = await supabase.auth.signInWithPassword({
+			email,
+			password
+		});
+		if (error) {
+			errorCode = error.code;
+			return;
+		}
+		goto('/authenticated');
+	};
+</script>
+
+<Dialog title="Anmelden">
+	<form class="flex flex-col gap-y-4">
+		<div class="flex flex-col gap-y-2">
+			<EmailField
+				id="email"
+				label="E-Mail:"
+				inputClass="w-full"
+				placeholder="jdoe@example.com"
+				error={errorCode}
+				bind:value={email}
+			/>
+			<PasswordField
+				id="password"
+				label="Passwort:"
+				inputClass="w-full"
+				placeholder="Passwort"
+				error={errorCode}
+				bind:value={password}
+			/>
+		</div>
+		<div class="flex flex-col gap-y-2">
+			<PrimaryButton type="submit" label="Anmelden" onClick={handleLogin} class="w-full" />
+			<LinkButton href="/register" label="Registrieren" class="w-full" />
+		</div>
+	</form>
+</Dialog>
