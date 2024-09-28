@@ -50,8 +50,9 @@
 			email,
 			password
 		});
-		if (error) {
-			errorCode = error.code;
+		console.log(data, error);
+		if (!data?.user) {
+			errorCode = 'Die Anmeldung mit diesen Zugangsdaten ist fehlgeschlagen!';
 			return;
 		}
 		goto('/authenticated');
