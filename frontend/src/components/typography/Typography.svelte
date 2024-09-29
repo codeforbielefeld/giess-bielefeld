@@ -1,1 +1,1 @@
-<p><slot /></p>
+<p {...$$props}><slot /></p>
