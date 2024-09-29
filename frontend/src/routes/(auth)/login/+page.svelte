@@ -41,14 +41,12 @@
 
 	const handleLogin = async (e: any) => {
 		e.preventDefault();
-		console.log('handleLogin');
 
 		loading = true;
 		const { data, error } = await supabase.auth.signInWithPassword({
 			email,
 			password
 		});
-		console.log(data, error);
 		if (!data?.user) {
 			errorCode = 'Die Anmeldung mit diesen Zugangsdaten ist fehlgeschlagen!';
 			return;
