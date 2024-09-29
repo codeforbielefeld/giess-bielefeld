@@ -11,8 +11,8 @@
 	import PasswordField from '../../../components/input/PasswordField.svelte';
 	import LinkButton from '../../../components/button/LinkButton.svelte';
 
-	let email: string = 'daniel@barooney.com';
-	let password: string = '12345678';
+	let email: string = '';
+	let password: string = '';
 	let errorCode: string | undefined = undefined;
 	$: email, password, errorCode;
 
@@ -20,8 +20,6 @@
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, session) => {
-			console.log(event, session);
-
 			if (event === 'INITIAL_SESSION') {
 				// handle initial session
 			} else if (event === 'SIGNED_IN') {
