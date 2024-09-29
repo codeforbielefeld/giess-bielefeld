@@ -13,7 +13,7 @@
 
 	const handleLogout = () => {
 		supabase.auth.signOut().then(() => {
-			goto('/login');
+			goto('/');
 		});
 	};
 </script>

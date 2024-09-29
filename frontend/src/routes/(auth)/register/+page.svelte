@@ -66,6 +66,9 @@
 						case 'validation_failed':
 							emailErrorCode = 'Die eingegebene E-Mail-Adresse ist ungültig.';
 							break;
+						case 'weak_password':
+							passwordErrorCode = 'Das Passwort ist zu schwach.';
+							break;
 						default:
 							emailErrorCode = error.code || 'unknown error';
 							break;

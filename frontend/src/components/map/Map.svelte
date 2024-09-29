@@ -82,7 +82,7 @@
 												last_clicked._icon.src = '/Tree_Marker.svg';
 											}
 											e.target._icon.src = '/Tree_Marker_Clicked.svg';
-											let treeId = e.sourceTarget.feature.properties.pitID;
+											let treeId = e.sourceTarget.feature.properties.uuid;
 											goto(`/trees/${treeId}`);
 											if (e.target._icon != null) {
 												last_clicked = e.target;
@@ -116,8 +116,6 @@
 			.addLayer(layer)
 			.on('moveend', onMove);
 
-		//map.invalidateSize();
-
 		onMove({ target: map });
 
 		const mapElement = document.querySelector('#' + id);
@@ -131,5 +129,5 @@
 </script>
 
 <!-- Map START -->
-<div {id} class="absolute min-w-full min-h-full" />
+<div {id} class="absolute top-0 left-0 min-w-full min-h-full" />
 <!-- Map END -->

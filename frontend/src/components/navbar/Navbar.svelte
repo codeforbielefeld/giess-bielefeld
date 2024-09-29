@@ -35,10 +35,12 @@
 	class="z-[700] flex shrink min-h-8 py-4 bg-white opacity-50 flex-row justify-around align-center"
 >
 	<button on:click={() => handleButtonbarClick('slidersButton')}
-		><img src="/slidersButton.svg" /></button
+		><img src="/slidersButton.svg" class="w-8 h-8" /></button
 	>
-	<button on:click={() => handleButtonbarClick('baumButton')}><img src="/baumButton.svg" /></button>
+	<button on:click={() => handleButtonbarClick('baumButton')}
+		><img src="/baumButton.svg" class="w-8 h-8" /></button
+	>
 	<button on:click={() => handleButtonbarClick('lupeButton')}
-		><img src="/lupeButton.svg" />
+		><img src="/lupeButton.svg" class="w-8 h-8" />
 	</button>
 </footer>

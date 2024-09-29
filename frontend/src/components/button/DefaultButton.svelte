@@ -4,6 +4,7 @@
 
 <BaseButton
 	{...$$props}
+	on:click
 	class={`${$$props.class} border-2 border-black text-black`}
 	label={$$props.label}
 />

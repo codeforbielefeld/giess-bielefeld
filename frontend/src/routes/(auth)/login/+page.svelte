@@ -80,7 +80,7 @@
 			/>
 		</div>
 		<div class="flex flex-col gap-y-2">
-			<PrimaryButton type="submit" label="Anmelden" onClick={handleLogin} class="w-full" />
+			<PrimaryButton type="submit" label="Anmelden" on:click={handleLogin} class="w-full" />
 			<LinkButton href="/register" label="Registrieren" class="w-full" />
 		</div>
 	</form>

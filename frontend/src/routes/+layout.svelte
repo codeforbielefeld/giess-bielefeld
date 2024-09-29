@@ -2,6 +2,7 @@
 	import '../app.css';
 	import Map from '../components/map/Map.svelte';
 	import Navbar from '../components/navbar/Navbar.svelte';
+	import UserMenu from '../components/userMenu/UserMenu.svelte';
 </script>
 
 <svelte:head>
@@ -11,7 +12,13 @@
 <div class="flex flex-col min-h-screen min-w-screen">
 	<div class="flex flex-col justify-end grow">
 		<Map />
-		<slot />
+		<div class="flex flex-col justify-end grow">
+			<div class="z-[1100]">
+				<slot />
+			</div>
+		</div>
 	</div>
-	<Navbar />
+	<div class="z-[1100] shrink">
+		<Navbar />
+	</div>
 </div>

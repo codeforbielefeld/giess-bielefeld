@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Höhe der Navbar hat Einfluss auf die Positionierung der Attribution von Leaflet */
+.leaflet-control-attribution {
+	@apply bottom-16;
+}
