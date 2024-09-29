@@ -27,25 +27,12 @@
 	"Stammradiu": 40.0,
 	"Kronenradi": 6.0 ,
 	"geometry": { "type": "Point", "coordinates": [ 8.511457515202823, 52.026940411111674 ] },
-	"waterdata": [
-				{
-					source: 'Dir',
-					amount: 20
-				},
-				{
-					source: 'Peter',
-					amount: 10
-				},
-				{
-					label: 'Stadt',
-					amount: 30,
-				},
-				{
-					label: 'Regen',
-					amount: 30,
-				}
-			]
-		} ;
+	"water_city": 30,
+	"water_rain": 50,
+	"water_user_sum": 60,
+	"water_missing": 50,
+	"water_user_history": {"Daniel": 20, "Andreas": 10, "Henriette": 30},
+	} ;
 
 
 		const { 
@@ -53,9 +40,15 @@
 			Stammdurch: durchmesser_stamm,
 			Kronendurc: durchmesser_krone,
 			Baumhoehe_: hoehe,
-			Stammumfan: umfang_stamm,
-			waterdata: water_history,
+			Stammumfan: umfang_stamm
 			} = testreeprops;
+
+		const water =  [
+			{"source": "city", "amount": testreeprops["water_city"]},
+			{"source": "rain", "amount": testreeprops["water_rain"]},
+			{"source": "users", "amount": testreeprops["water_user_sum"]},
+			{"source": "missing", "amount": testreeprops["water_missing"]}
+		]
 
 
 </script>
@@ -78,7 +71,7 @@
 				</p>
 			</AccordionItem>
 		</Accordion>
-		<WaterColumn {water_history}/>
+		<WaterColumn {water}/>
 	</div>
 
 	
