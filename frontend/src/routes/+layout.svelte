@@ -2,7 +2,6 @@
 	import '../app.css';
 	import Map from '../components/map/Map.svelte';
 	import Navbar from '../components/navbar/Navbar.svelte';
-	import UserMenu from '../components/userMenu/UserMenu.svelte';
 </script>
 
 <svelte:head>
