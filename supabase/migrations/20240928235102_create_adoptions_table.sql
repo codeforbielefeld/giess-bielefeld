@@ -8,7 +8,7 @@ CREATE TABLE public.adoptions
     deleted_at          timestamp DEFAULT NULL,
 
     FOREIGN KEY (tree_uuid) REFERENCES public.trees(uuid) ON DELETE CASCADE,
-    FOREIGN KEY (user_uuid) REFERENCES auth.users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_uuid) REFERENCES auth.users(id) ON DELETE CASCADE,
 
     UNIQUE (tree_uuid, user_uuid)
 );
