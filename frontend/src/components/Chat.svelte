@@ -64,7 +64,7 @@
 </script>
 
 <div id="chat-overlay" class=" top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50">
-  <div id="chat-container" class="bg-gray-200 flex flex-col h-full w-full  top-0 border border-gray-800 rounded m-2">
+  <div id="chat-container" class="bg-gray-200 flex flex-col h-full w-full fixed top-0 border border-gray-800 rounded m-2">
     <div class="close-chat flex justify-end m-2 text-gray-800">
       <svg id="close-button" on:click={removeChatbox} on:keypress={removeChatbox}
            fill="000" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
