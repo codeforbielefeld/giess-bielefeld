@@ -1,3 +1,6 @@
+<script>
+</script>
+
 <div class="card">
     <h1>
         Bauminformation
@@ -18,7 +21,6 @@
         <AccordionItem key="chat">
             <h2 slot="header">Chat</h2>
             <div slot="body">
-                Hier kommt was zum Chat rein ...
             </div>
         </AccordionItem>
         <hr>

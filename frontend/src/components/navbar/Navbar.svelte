@@ -32,7 +32,7 @@
 </script>
 
 <footer
-	class="z-[700] flex shrink min-h-8 py-4 bg-white opacity-50 flex-row justify-around align-center"
+	class="z-[700] flex shrink min-h-8 py-4 bg-white flex-row justify-around align-center"
 >
 	<button on:click={() => handleButtonbarClick('slidersButton')}
 		><img src="/slidersButton.svg" class="w-8 h-8" /></button

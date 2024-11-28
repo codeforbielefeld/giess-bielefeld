@@ -2,9 +2,23 @@
 <script lang="ts">
 	import { Accordion, AccordionItem } from 'svelte-collapsible';
 	import WaterColumn from '../../../components/WaterColumn.svelte';
+	import Chat from '../../../components/Chat.svelte';
 	import Card from '../../../components/card/Card.svelte';
 	export let data;
-	console.log(data.treeId);
+	import { createEventDispatcher } from 'svelte';
+
+	export let activeTabIndex: number = 0;
+	//const dispatch = createEventDispatcher();
+
+	function handleTabChange(tab:number) {
+		activeTabIndex = tab;
+		//dispatch('tabChange', { tab });
+	}
+
+	$: showInfo = true;
+	$: showChat = false;
+
+	$: buttonLabels = ['Infos', 'Chat'];
 
 	let testreeprops = {
 		pitID: '00008100:00c0fbd5',
@@ -59,19 +73,65 @@
 	} = testreeprops;
 </script>
 
-<Card title={`${art_de}, ALTER`} open={true}>
-	<Accordion>
-		<AccordionItem key="a">
-			<h2 slot="header">
-				Über diesen Baum
-				<button><img src="/plusButton.svg" /></button>
-			</h2>
-			<p slot="body">
-				Höhe: {hoehe}<br />
-				Kronendurchmesser: {durchmesser_krone}<br />
-				Stammdurchmesser: {durchmesser_stamm}
-			</p>
-		</AccordionItem>
-	</Accordion>
-	<WaterColumn {water_history} />
+<Card title={`${art_de}, ALTER`} open={true} >
+	
+	<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+	<nav 
+	class="flex flex-col justify-center px-3 py-2 text-base font-medium text-center whitespace-nowrap bg-green-300 rounded-md shadow-sm"
+	role="tablist"
+	aria-label="Content sections"
+	>
+
+	<section class="flex relative justify-between items-center w-full">
+		<div
+		class={`absolute transition-transform ${activeTabIndex === 0? 'translate-x-0' : 'translate-x-full'} z-0 bg-white rounded h-[100%] shadow-[0px_1px_4px_rgba(0,0,0,0.15)] w-[50%]`}
+		/>
+
+		<button
+		role="tab"
+		aria-selected={activeTabIndex === 0}
+		aria-controls="info-panel"
+		class="flex-1 py-2 shrink gap-2.5 self-stretch my-auto ${
+				showInfo? 'text-zinc-600' : 'text-neutral-500'
+				} z-10"
+		on:click={() => handleTabChange(0)}
+		tabindex="0"
+		>
+      Infos
+    </button>
+    <button
+      role="tab"
+      aria-selected={activeTabIndex === 1}
+      aria-controls="chat-panel"
+      class="flex-1 py-2 shrink gap-2.5 self-stretch my-auto ${
+			  showChat? 'text-zinc-600' : 'text-neutral-500'
+			} z-10"
+      on:click={() => handleTabChange(1)}
+      tabindex="0"
+    >
+      Chat
+    </button>
+  </section>
+</nav>
+
+  <div class="overflow-y-auto h-full">
+	{#if activeTabIndex === 0}
+		<Accordion>
+			<AccordionItem key="a">
+				<h2 slot="header">
+					Über Mich
+					<button><img src="/plusButton.svg" alt="Plusbutton"/></button>
+				</h2>
+				<p slot="body">
+					Höhe: {hoehe}<br />
+					Kronendurchmesser: {durchmesser_krone}<br />
+					Stammdurchmesser: {durchmesser_stamm}
+				</p>
+			</AccordionItem>
+		</Accordion>
+		<WaterColumn />
+	{:else}
+	CHAAAAAT
+	{/if}
+</div>
 </Card>

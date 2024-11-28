@@ -23,7 +23,7 @@
 <!-- Card START -->
 {#if open}
 	<div
-		class="container mx-auto z-[1100] bg-white p-4 rounded-t-xl max-h-3/4 overflow-y-auto"
+		class="container mx-auto z-[1100] bg-white p-4 rounded-t-xl h-[80vh] max-h-[80vh]"
 		on:click|stopPropagation
 	>
 		<div class="flex flex-row items-center justify-between">
