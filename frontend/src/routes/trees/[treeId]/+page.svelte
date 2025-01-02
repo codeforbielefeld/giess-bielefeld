@@ -131,7 +131,7 @@
 		</Accordion>
 		<WaterColumn />
 	{:else}
-	CHAAAAAT
+	 <Chat/>
 	{/if}
 </div>
 </Card>

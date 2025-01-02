@@ -132,29 +132,7 @@
 </div>
 
 <style>
-    #chat-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
 
-    #chat-container {
-        z-index: 1001;
-        background: #eee;
-        display: flex;
-        flex-direction: column;
-        height: calc(100% - 20px);
-        width: calc(100vw - 20px);
-        position: fixed;
-        top: 0;
-        border: 1px solid #2A2B2A;
-        border-radius: 5px;
-        margin: 10px;
-    }
 
     .message-wrapper {
         display: flex;
