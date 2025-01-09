@@ -6,3 +6,17 @@
 .leaflet-control-attribution {
 	@apply bottom-16;
 }
+
+
+.bg-message-bot{
+	@apply bg-gray-150;
+}
+
+.bg-message-user{
+	@apply bg-green-500 bg-opacity-75;
+
+}
+
+.bg-message-input{
+	@apply bg-green-500;
+}

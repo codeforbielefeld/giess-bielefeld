@@ -69,7 +69,7 @@
 <div id="chat-container" class="flex flex-col">
 	<div class="grow">
 		<div class="sticky top-0 min-h-12 h-12 w-100 bg-gradient-to-b from-white z-[9999999]"></div>
-		<div class="flex flex-col h-full overflow-y-auto">
+		<div class="flex flex-col h-full overflow-y-auto gap-y-1">
 			{#each messages as message}
 				<Message {message} />
 				<Message {message} />
@@ -116,15 +116,15 @@
 		</div>
 	</div>
 
-	<div class="shrink-1">
-		<div>
-			<input
+	<div class="shrink bottom-0 sticky pt-2 bg-white border-t border-t-gray-500" >
+		<div class="flex flex-row gap-1.5">
+			<input class="grow bg-green-500 rounded-full py-1 px-3 placeholder:text-neutral-500  placeholder:italic"
 				disabled={!chatAvailable}
 				bind:value={newMessage}
-				placeholder={chatAvailable ? 'Schreibe deine Nachricht...' : 'Chat beendet.'}
+				placeholder={chatAvailable ? '' : 'Chat beendet.'}
 				on:keydown={handleKeydown}
 			/>
-			<button
+			<button class="shrink w-1/12"
 				disabled={!chatAvailable}
 				on:click={(e) => {
 					if (newMessage !== '') {
@@ -132,7 +132,7 @@
 					}
 				}}
 			>
-				Senden
+				<img src="/sendIcon.svg" class="w-8 h-8" alt="senden">
 			</button>
 		</div>
 	</div>

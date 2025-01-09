@@ -24,7 +24,7 @@
 {#if open}
 	<div
 		id="card"
-		class="container mx-auto z-[1100] bg-white px-4 pt-4 rounded-t-xl h-[80vh] max-h-[80vh] border border-green-500"
+		class="container mx-auto z-[1100] bg-white px-4 pt-4 rounded-t-xl h-[80vh] max-h-[80vh]"
 		on:click|stopPropagation
 	>
 		<div id="card-content" class="flex flex-col h-full">
