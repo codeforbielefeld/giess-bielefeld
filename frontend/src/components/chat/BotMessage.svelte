@@ -13,10 +13,10 @@
 </script>
 
 <div class="flex gap-1.5 flex-row w-full bot-message">
-	<div class="w-1/12 pt-2 ">
-			<img src="/tree.svg" alt="Bot" class="w-8 h-8" />	
+	<div class="pt-2 ">
+			<img src="/tree.svg" alt="Bot" class="min-w-8 min-h-8" />	
 	</div>
-	<div class="w-11/12">
+	<div>
 		<div class="p-3 text-black rounded-xl bg-message-bot box-border">
 			{message.text}
 			{#if message.ai}
