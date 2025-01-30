@@ -87,6 +87,13 @@
 											if (e.target._icon != null) {
 												last_clicked = e.target;
 											}
+
+											// center tree above card
+											const lat1 = map.getBounds()._northEast.lat;
+											const lat2 = map.getBounds()._southWest.lat;
+											const latb = e.latlng.lat;
+											const latn = latb - Math.abs(lat1 - lat2) / 2.35;
+											map.panTo({ lat: latn, lng: e.latlng.lng });
 										});
 									}
 								}).addTo(markers);
