@@ -15,3 +15,5 @@ preparation/__pycache__
 
 .env
 !env.example
+
+.vscode
