@@ -4,6 +4,13 @@
 	import WaterColumn from '../../../components/WaterColumn.svelte';
 	import Chat from '../../../components/chat/Chat.svelte';
 	import Card from '../../../components/card/Card.svelte';
+
+	import AdoptTree from '../../../features/adoption/AdoptTree.svelte';
+	import { supabase } from '../../../supabase';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import type { Tree } from '../../../types/Tree';
+
 	export let data;
 
 	export let activeTabIndex: number = 0;
@@ -17,57 +24,19 @@
 
 	$: buttonLabels = ['Infos', 'Chat'];
 
-	let testreeprops = {
-		pitID: '00008100:00c0fbd5',
-		Standort_N: 1,
-		Zusatz: null,
-		laufende_n: '1',
-		gefaellt: 0,
-		Stammdurch: 80.0,
-		Kronendurc: 12.0,
-		Baumhoehe_: 21.0,
-		Stammumfan: 251.33,
-		Baumgruppe: 0,
-		Bezirk_Nr: '11',
-		Bezirk_Bez: 'WEST - BUERGERPARK',
-		Objekt_Nr: '001',
-		Objekt_Bez: 'GA BÃ¼rgerpark',
-		Baumart_bo: 'Quercus robur',
-		Baumart_de: 'Stiel-Eiche',
-		Baumart_ku: 'q r',
-		PflE_Art_N: '1270',
-		PflE_Art_B: 'Einzelbaum',
-		Stammradiu: 40.0,
-		Kronenradi: 6.0,
-		geometry: { type: 'Point', coordinates: [8.511457515202823, 52.026940411111674] },
-		waterdata: [
-			{
-				source: 'Dir',
-				amount: 20
-			},
-			{
-				source: 'Peter',
-				amount: 10
-			},
-			{
-				label: 'Stadt',
-				amount: 30
-			},
-			{
-				label: 'Regen',
-				amount: 30
-			}
-		]
-	};
 
-	const {
-		Baumart_de: art_de,
-		Stammdurch: durchmesser_stamm,
-		Kronendurc: durchmesser_krone,
-		Baumhoehe_: hoehe,
-		Stammumfan: umfang_stamm,
-		waterdata: water_history
-	} = testreeprops;
+	export let tree: Tree;
+
+	$: tree;
+
+	onMount(async () => {
+		const { data, error } = await supabase
+			.from('trees')
+			.select()
+			.eq('uuid', $page.params.treeId)
+			.maybeSingle();
+		tree = data;
+	});
 </script>
 
 <Card title={`${art_de}, ALTER`} open={true}>
@@ -130,9 +99,13 @@
 					</AccordionItem>
 				</Accordion>
 				<WaterColumn />
+      {#if tree}
+      		<AdoptTree {tree} />
+      {/if}
 			{:else}
 				<Chat />
 			{/if}
 		</div>
 	</div>
+
 </Card>
