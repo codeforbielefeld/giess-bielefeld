@@ -1,8 +1,8 @@
 # Giess Bielefeld
 
-TODO: Beschreibung hinzufügen.
+Das BaumBie Projekt nutzt Baumdaten und Geokoordinaten, um Bürger:innen gezielt beim Auffinden und Bewässern städtischer Bäume in Bielefeld und Umgebung zu unterstützen. Die Nutzer:innen erhalten Informationen zu Bäumen und werden zu Interaktionen mit Bäumen über einen Chatbot animiert. 
 
-## Setup
+## Supabase Setup
 
 ### Supabase-Instanz starten
 
@@ -18,61 +18,68 @@ npm install -g supabase-cli
 
 Da die supabase-cli im Hintergrund Docker nutzt, musst du den Docker Daemon starten (ggf. noch zuerst Docker Desktop installieren), bevor du die supabase-cli starten kannst:
 
+Führe aus dem Root-Verzeichnis aus: 
+
 ```
 supabase start
 ```
+
 Idealerweise erhältest du dann im Terminal eine Meldung "Started supabase local development setup." mit verschiednen Werten.
 
-Darunter findest du auch die Studio URL mit der du Supabase Studio im Browser kannst. aufrufen.
 
-Zudem sind für uns sind besonders die folgenden Eigenschaften (Zugangsdaten für die Supabase-Instanz) relevant:
-- "anon key"
-- "service_role key"
+### Umgebungsvariablen setzen
 
-Diese Werte kopierst du bitte in eine .env kopieren (die der Struktur von der .env.example - Datei des Projektes folgt) für die entsprechenden Eigenschaften "VITE_SUPABASE_ANON_KEY" und "SUPABASE_SERVICE_ROLE_KEY".
+Nenne die .env.example - Datei in .env um. 
 
+Von Supabase werden jetzt folgende Variablen (=Zugangsdaten für die Supabase-Instanz) in die .env Datei kopiert: 
 ```
-VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_URL=http://127.0.0.1:54323
 VITE_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
+Nach dem Ausführen von `supabase start` entnimmst du diese Variablen aus dem Terminal Log:
+- "anon key" -> VITE_SUPABASE_ANON_KEY
+- "service_role key" -> SUPABASE_SERVICE_ROLE_KEY
 
-Abschließend noch ausführen:
+
+### Supabase Migration
 
 ```
 supabase migrations up
 ```
 
-### Berechtigungen
 
-Um auf die Supabase-Instanz und die darin enthaltenen Daten zugreifen zu können, müssen die Berechtigungen für die
-Tabelle `trees` vergeben werden.
-1.) Dazu kann das Supabase Studio unter der URL http://127.0.0.1:54323 geöffnet werden, solange die Supabase im Hintergrund
-läuft. Dort kann die Tabelle `trees` ausgewählt und die Berechtigungen für die Tabelle vergeben werden:
-2.) In der linken Seitenleiste wird der Table Editor ausgewählt.
-3.) In der geöffneten Ansicht wählst du dann die Tabelle `trees` aus.
-"RLS disabled" -> "Enable RLS for this table" -> "Enable RLS" -> "Add RLS policy" -> "Create a new policy"
+### Supabase Berechtigungen setzen (evtl. optional)
+
+Um auf die Supabase-Instanz und die darin enthaltenen Daten zugreifen zu können, müssen die Berechtigungen für die Tabelle `trees` vergeben werden.
+
+Öffne das Supabase Studio:  http://127.0.0.1:54323 solange die Supabase im Hintergrund läuft. 
+
+Öffne den Table Editor in der linken Seitenleiste. Wähle dann die Tabelle `trees` aus.
+Wähle "RLS disabled" (Menüleiste oben) -> "Enable RLS for this table" -> "Enable RLS" -> "Add RLS policy" -> "Create a new policy"
 
 Wähle das Template "SELECT: Enable read access for all users" 
 
 ```
 create policy "Enable read access for all users" on "public"."trees" as permissive for select to public using (true);
 ```
-und anschließend mit Klick auf `Save policy` speichern.
+
+Speichern mit Klick auf `Save policy`.
 
 -> oder in `/supabase/migrations/20240316110547_create_trees_table` speichern
 
 ???
 
-### Datenimport
+### Datenimport nach Supabase 
 
-- Für den Import der Daten wird die `trees.json`-Datei benötigt, die aktuell nicht Bestandteil dieses Repositorys ist!
-- Diese Datei muss im `preparation`-Verzeichnis im `input`-Unterverzeichnis abgelegt werden
-- Anschließend kann der Import mit dem `import`-Skript im `preparation`-Verzeichnis gestartet werden
+Für den Import der Daten wird die `trees.json`-Datei benötigt, die aktuell nicht Bestandteil dieses Repositories ist! (Die Datei wird auf Nachfrage von uns bereitgestellt.)
 
-Da weitere Bibliotheken erforderlich sind, um die Daten zu importieren, empfiehlt es sich, eine virtuelle
-Python-Umgebung im `preparation`-Ordner zu erstellen und die erforderlichen Bibliotheken zu installieren:
+Lege die Datei hier ab: `preparation/input`
+
+Da weitere Bibliotheken erforderlich sind, um die Daten zu importieren, empfiehlt es sich, eine virtuelle Python-Umgebung im `preparation`-Ordner zu erstellen und die erforderlichen Bibliotheken zu installieren:
+
+Erstellen der Virtuellen Umgebung: 
 
 ```
 python3 -m venv venv
@@ -80,28 +87,48 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Anschließend kann der Import gestartet werden:
+Navigiere ins `preparation`-Verzeichnis und importiere die Daten: 
 
 ```
 python import.py <path-to-geojson-file>
 ```
 
-### Geosplitting
+## Geosplitting (Datensegmentierung)
 
 Um die Performance des Karten-Renderns zu verbessern muss die `trees.json`-Datei gesplittet werden.
-Dazu sollte die [Anleitung](./preparation/README.md) befolgt werden.
 
-Kopiere anschließend die neu erstellten Segmente aus `./preparation/segments/*` in das `static`-Verzeichnis in `frontend`.
+`GeoSplitter` ist ein Python-Tool, um große GeoJSON-Dateien in kleinere, handhabbare Segmente aufzuteilen. Dies ist besonders nützlich, um die Ladezeiten und Effizienz bei der Arbeit mit umfangreichen geographischen Daten in Webanwendungen oder GIS-Projekten zu verbessern. Zusätzlich generiert GeoSplitter einen JSON-Index, der jedes Segment mit einem spezifischen Koordinatenbereich verknüpft, um eine einfache Integration und Nutzung der segmentierten Daten zu ermöglichen.
+
+### Vorbereitung
+
+Bevor du `GeoSplitter` verwendest, stelle sicher, dass Python `3.x` auf deinem System installiert ist.
+Diese Abhängigkeiten kannst du durch die Installation der `requirements.txt` Datei einbinden, die im Projekt enthalten ist. Installiere die erforderlichen Pakete mit Pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+Platziere deine GeoJSON-Datei im `input`-Unterordner. Es wird erwartet, dass sie `trees.geojson` heißt; ändere gegebenenfalls den Wert von `INPUT_PATH` im `splitter.py` Skript, um auf deine spezifische Datei zu verweisen.
+
+
+### Ausführen Splitter
+
+Starte das `splitter.py`-Skript, um die GeoJSON-Datei zu segmentieren und die Index-Datei zu generieren. Standardmäßig wird ein neuer Unterordner `segments` erzeugt mit mehreren kleinen GeoJSON-Dateien sowie eine `segments_index.json`, die die Segmentdateien mit den Koordinatenbereichen verknüpft:
 
 ```bash
 python preparation/splitter.py
+```
+
+Kopiere anschließend die neu erstellten Segmente aus `./preparation/segments/*` in das `static`-Verzeichnis in `frontend`:
+
+```bash
 cp -r preparation/segments frontend/static
 ```
 
 
-## Entwicklung
+### Starten der App
 
-Installiere die Abhängigkeiten, bevor du mit der Entwicklung beginnst:
+Navigiere in den Frontend-Ordner. Installiere alle Abhängigkeiten: 
 
 ```
 npm install

@@ -23,20 +23,32 @@
 <!-- Card START -->
 {#if open}
 	<div
-		class="container mx-auto z-[1100] bg-white p-4 rounded-t-xl max-h-3/4 overflow-y-auto"
+		id="card"
+		class="container mx-auto z-[1100] bg-white px-4 pt-4 rounded-t-xl h-[80vh] max-h-[80vh]"
 		on:click|stopPropagation
 	>
-		<div class="flex flex-row items-center justify-between">
-			<div>
-				<h1 class="text-2xl font-bold">{title}</h1>
+		<div id="card-content" class="flex flex-col h-full">
+			<!-- Navigation -->
+			<div class="flex flex-row items-center justify-between shrink">
+				<div>
+					<h1 class="text-2xl font-bold">{title}</h1>
+				</div>
+				{#if closeable}
+					<button class="shrink" on:click={close}>
+						<img src="/cross.svg" />
+					</button>
+				{/if}
 			</div>
-			{#if closeable}
-				<button class="shrink" on:click={close}>
-					<img src="/cross.svg" />
-				</button>
-			{/if}
+			<!-- Navigation END -->
+
+			<slot name="navigation" />
+
+			<!-- Card Content -->
+			<div class="overflow-y-auto grow">
+				<slot />
+			</div>
+			<!-- Card Content END -->
 		</div>
-		<slot />
 	</div>
 {/if}
 <!-- Card END -->
