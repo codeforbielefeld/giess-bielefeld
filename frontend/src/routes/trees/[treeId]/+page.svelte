@@ -39,13 +39,14 @@
 	});
 </script>
 
-<Card title={`${art_de}, ALTER`} open={true}>
+{#if tree}
+<Card title={`${tree.tree_type_german}, ALTER`} open={true}>
 	<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
 
 	<div slot="navigation">
 		<nav
 			id="single-tree-navigation"
-			class="flex flex-col justify-center px-3 py-2 text-base font-medium text-center bg-green-300 rounded-md shadow-sm whitespace-nowrap"
+			class="flex flex-col justify-center px-3 py-2 text-base font-medium text-center bg-green-600 bg-opacity-60 rounded-md shadow-sm whitespace-nowrap"
 			role="tablist"
 			aria-label="Content sections"
 		>
@@ -87,21 +88,31 @@
 			{#if activeTabIndex === 0}
 				<Accordion>
 					<AccordionItem key="a">
-						<h2 slot="header">
+						<div slot="header">
+							<div class="inline-flex flex-row items-start gap-2.5">
+							<p class="text-black font-cera-bielefeld text-base font-bold leading-normal">
 							Über Mich
-							<button><img src="/plusButton.svg" alt="Plusbutton" /></button>
-						</h2>
+							</p>
+							<button class="translate-y-1.5"><img src="/plusButton.svg" alt="Plusbutton" /></button>
+							</div>
+						</div>
 						<p slot="body">
-							Höhe: {hoehe}<br />
-							Kronendurchmesser: {durchmesser_krone}<br />
-							Stammdurchmesser: {durchmesser_stamm}
+							Höhe: {tree.height}<br />
+							Kronendurchmesser: {tree.crown_diameter}<br />
+							Stammdurchmesser: {tree.trunk_diameter}
 						</p>
 					</AccordionItem>
+					<AccordionItem>
+						<h2 slot="header">Wasserbedarf</h2>
+						<p slot="body"><WaterColumn/></p>
+					</AccordionItem>
+					<AccordionItem>
+						<h2 slot="header">Wer wann geossen hat</h2>
+						<p slot="body">Hier werden die letzten 10 Gießungen angezeigt</p>
+					</AccordionItem>
 				</Accordion>
-				<WaterColumn />
-      {#if tree}
+
       		<AdoptTree {tree} />
-      {/if}
 			{:else}
 				<Chat />
 			{/if}
@@ -109,3 +120,4 @@
 	</div>
 
 </Card>
+{/if}

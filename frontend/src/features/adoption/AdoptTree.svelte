@@ -10,8 +10,8 @@
 
 	let errorMessage: string = '';
 	let successMessage: string = '';
-	let adopted = false;
-	let label = '';
+	$: adopted = false;
+	$: label = 'Adoptiere diesen Baum';
 	$: tree, adopted;
 
 	onMount(async () => {
@@ -25,7 +25,7 @@
 			.eq('tree_uuid', treeId)
 			.eq('user_uuid', userId);
 		adopted = adoptedData.data?.length !== 0;
-		label = adopted ? 'Du hast diesen Baum bereits adoptiert' : 'Adoptiere diesen Baum';
+		label = adopted ? 'Adoption aufheben' : 'Adoptiere diesen Baum';
 	});
 
 	const handleAdoptTree = async () => {
@@ -34,10 +34,19 @@
 			errorMessage = error;
 			return;
 		}
+		if (!adopted){
 		({ data, error } = await supabase
 			.from('adoptions')
 			.insert({ tree_uuid: tree.uuid, user_uuid: data?.user?.id })
 			.select());
+		}
+		else{
+			({ data, error } = await supabase
+			.from('adoptions')
+			.delete()
+			.eq("tree_uuid", tree.uuid)
+			.eq("user_uuid", data?.user?.id )	)
+		}
 		if (error) {
 			errorMessage =
 				'Beim Adoptieren des Baumes ist ein Fehler aufgetreten. Hast du ihn vielleicht bereits adoptiert?';
@@ -45,8 +54,9 @@
 			return;
 		}
 
-		adopted = true;
-		successMessage = 'Du hast diesen Baum erfolgreich adoptiert!';
+		adopted = !adopted;
+		label = adopted ? 'Adoption aufheben' : 'Adoptiere diesen Baum';
+		successMessage = adopted? 'Du hast diesen Baum erfolgreich adoptiert!' : 'Adoption aufgehoben';
 		errorMessage = '';
 	};
 </script>
@@ -55,12 +65,11 @@
 	<div>
 		<Heading level={2}>Baum adoptieren</Heading>
 		<Typography class="mb-4"
-			>Mit einer Adoption dieses Baums zeigst du deine Verbundenheit mit diesem Baum und der Stadt,
-			denn Bäume helfen allen Menschen in deiner Stadt, ein lebenswerteres und gesundes Leben zu
-			leben.</Typography
+			>Mit einer Adoption dieses Baums zeigst du deine Verbundenheit mit diesem Baum und mit Bielefeld.
+			Denn Bäume helfen uns bei einem lebenswerten und gesunden Leben.</Typography
 		>
-		<PrimaryButton disabled={adopted} {label} on:click={handleAdoptTree} />
+		<PrimaryButton class={adopted? "bg-gray-300" : "bg-green-600"} {label} on:click={handleAdoptTree} />
 		<p class="text-orange-500">{errorMessage}</p>
-		<p class="text-green-500">{successMessage}</p>
+		<p class="text-green-600">{successMessage}</p>
 	</div>
 {/if}

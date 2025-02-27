@@ -6,6 +6,6 @@
 	on:click
 	{...$$props}
 	{...$$restProps}
-	class={`${$$props.class} bg-green-500 hover:bg-green-300 text-black`}
+	class={`bg-green-600 hover:bg-green-800 hover:text-white text-black ${$$props.class}` }
 	label={$$props.label}
 />
