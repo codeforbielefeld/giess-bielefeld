@@ -26,6 +26,13 @@
 		id="card"
 		class="container mx-auto z-[1100] bg-white px-4 pt-4 rounded-t-xl h-[80vh] max-h-[80vh]"
 		on:click|stopPropagation
+		role="button"
+		tabindex="0"
+		on:keydown={(e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            e.target.click();
+        }}
 	>
 		<div id="card-content" class="flex flex-col h-full">
 			<!-- Navigation -->
@@ -35,7 +42,7 @@
 				</div>
 				{#if closeable}
 					<button class="shrink" on:click={close}>
-						<img src="/cross.svg" />
+						<img src="/cross.svg" alt="" />
 					</button>
 				{/if}
 			</div>

@@ -11,8 +11,6 @@
 	import { page } from '$app/stores';
 	import type { Tree } from '../../../types/Tree';
 
-	export let data;
-
 	export let activeTabIndex: number = 0;
 
 	function handleTabChange(tab: number) {
