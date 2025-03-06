@@ -44,7 +44,7 @@
 	<div slot="navigation">
 		<nav
 			id="single-tree-navigation"
-			class="flex flex-col justify-center px-3 py-2 text-base font-medium text-center bg-green-600 bg-opacity-60 rounded-md shadow-sm whitespace-nowrap"
+			class="flex flex-col justify-center px-3 py-2 text-base font-medium text-center bg-green-600 bg-opacity-60 rounded-md shadow-sm whitespace-nowrap mb-4"
 			role="tablist"
 			aria-label="Content sections"
 		>
@@ -82,15 +82,16 @@
 	</div>
 
 	<div id="single-tree-content" class="flex flex-col">
-		<div>
+		<div class="flex flex-col gap-4">
 			{#if activeTabIndex === 0}
 				<Accordion>
+					<div class="flex flex-col gap-4">
 					<AccordionItem key="a">
 						<div slot="header">
 							<div class="inline-flex flex-row items-start gap-2.5">
-							<p class="text-black font-cera-bielefeld text-base font-bold leading-normal">
-							Über Mich
-							</p>
+								<p class="text-black font-cera-bielefeld text-base font-bold leading-normal">
+								Über Mich
+								</p>
 							<button class="translate-y-1.5"><img src="/plusButton.svg" alt="Plusbutton" /></button>
 							</div>
 						</div>
@@ -100,20 +101,43 @@
 							Stammdurchmesser: {tree.trunk_diameter}
 						</p>
 					</AccordionItem>
-					<AccordionItem>
-						<h2 slot="header">Wasserbedarf</h2>
-						<p slot="body"><WaterColumn/></p>
+
+					<AccordionItem key="b">
+						<div slot="header">
+							<div class="inline-flex flex-row items-start gap-2.5">
+								<p class="text-black font-cera-bielefeld text-base font-bold leading-normal">
+								Wasserbedarf
+								</p>
+							<button class="translate-y-1.5"><img src="/plusButton.svg" alt="Plusbutton" /></button>
+							</div>
+						</div>
+						<p slot="body">
+							<WaterColumn/>
+						</p>
 					</AccordionItem>
-					<AccordionItem>
-						<h2 slot="header">Wer wann geossen hat</h2>
-						<p slot="body">Hier werden die letzten 10 Gießungen angezeigt</p>
+
+					<AccordionItem key="c">
+						<div slot="header">
+							<div class="inline-flex flex-row items-start gap-2.5">
+								<p class="text-black font-cera-bielefeld text-base font-bold leading-normal">
+								Wer wann gegossen hat
+								</p>
+								<button class="translate-y-1.5"><img src="/plusButton.svg" alt="Plusbutton" /></button>
+								</div>
+							</div>
+						<p slot="body">
+							Hier werden die letzten 10 Gießungen angezeigt
+						</p>
 					</AccordionItem>
+				</div>
 				</Accordion>
 
       		<AdoptTree {tree} />
+
 			{:else}
 				<Chat />
 			{/if}
+
 		</div>
 	</div>
 

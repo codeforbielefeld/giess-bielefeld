@@ -62,14 +62,13 @@
 </script>
 
 {#if tree}
-	<div>
-		<Heading level={2}>Baum adoptieren</Heading>
-		<Typography class="mb-4"
-			>Mit einer Adoption dieses Baums zeigst du deine Verbundenheit mit diesem Baum und mit Bielefeld.
-			Denn Bäume helfen uns bei einem lebenswerten und gesunden Leben.</Typography
-		>
+	<div class="flex flex-col gap-2">
 		<PrimaryButton class={adopted? "bg-gray-300" : "bg-green-600"} {label} on:click={handleAdoptTree} />
 		<p class="text-orange-500">{errorMessage}</p>
 		<p class="text-green-600">{successMessage}</p>
+		<Typography>
+			Mit einer Adoption dieses Baums zeigst du deine Verbundenheit mit diesem Baum und mit Bielefeld.
+			Denn Bäume helfen uns bei einem lebenswerten und gesunden Leben.</Typography
+		>
 	</div>
 {/if}

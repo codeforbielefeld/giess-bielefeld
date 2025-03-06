@@ -30,7 +30,6 @@
     
     <section class="flex relative flex-col items-start text-lg text-black max-w-[350px]">
       <header class="flex z-0 gap-10 items-start self-stretch w-full whitespace-nowrap">
-        <h1 class="font-bold">Wasserbedarf</h1>
         <p class="font-black text-right">-</p>
       </header>
     
