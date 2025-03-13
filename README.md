@@ -116,10 +116,10 @@ Platziere deine GeoJSON-Datei im `input`-Unterordner. Es wird erwartet, dass sie
 Starte das `splitter.py`-Skript, um die GeoJSON-Datei zu segmentieren und die Index-Datei zu generieren. Standardmäßig wird ein neuer Unterordner `segments` erzeugt mit mehreren kleinen GeoJSON-Dateien sowie eine `segments_index.json`, die die Segmentdateien mit den Koordinatenbereichen verknüpft:
 
 ```bash
-python preparation/splitter.py
+python preparation/supa_splitter.py
 ```
 
-Kopiere anschließend die neu erstellten Segmente aus `./preparation/segments/*` in das `static`-Verzeichnis in `frontend`:
+Kopiere anschließend die neu erstellten Segmente aus `./preparation/segments/*` in das `static`-Verzeichnis in `frontend`. Den folgenden Befehl muss im Root-Verzeichnis ausgeführt werden:
 
 ```bash
 cp -r preparation/segments frontend/static
