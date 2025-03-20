@@ -10,7 +10,7 @@
 				url = '/account';
 				break;
 			case 'baumButton':
-				url = '/trees/2';
+				url = '/status';
 				break;
 			case 'lupeButton':
 				url = '/search';
