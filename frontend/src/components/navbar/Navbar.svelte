@@ -13,7 +13,7 @@
 				url = '/trees/2';
 				break;
 			case 'lupeButton':
-				url = '/trees/5';
+				url = '/search';
 				break;
 		}
 		if (isOpen) {

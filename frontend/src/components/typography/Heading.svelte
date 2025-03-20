@@ -1,5 +1,6 @@
 <script lang="ts">
-	export const level: number = 1;
+	export let level: number = 1;
+	console.log("level: ",)
 </script>
 
 {#if level === 1}

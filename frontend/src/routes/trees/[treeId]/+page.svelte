@@ -4,7 +4,7 @@
 	import WaterColumn from '../../../components/WaterColumn.svelte';
 	import Chat from '../../../components/chat/Chat.svelte';
 	import Card from '../../../components/card/Card.svelte';
-
+	import Heading from '../../../components/typography/Heading.svelte';
 	import AdoptTree from '../../../features/adoption/AdoptTree.svelte';
 	import { supabase } from '../../../supabase';
 	import { onMount } from 'svelte';
@@ -96,9 +96,9 @@
 							</div>
 						</div>
 						<p slot="body">
-							Höhe: {tree.height}<br />
-							Kronendurchmesser: {tree.crown_diameter}<br />
-							Stammdurchmesser: {tree.trunk_diameter}
+							<b>Höhe:</b>{tree.height} Meter<br />
+							<b>Kronendurchmesser:</b> {tree.crown_diameter} Meter<br />
+							<b>Stammdurchmesser:</b> {tree.trunk_diameter} Zentimeter
 						</p>
 					</AccordionItem>
 
