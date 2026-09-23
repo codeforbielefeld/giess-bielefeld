@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Searchfield } from '$components/ui';
+	import { Searchfield } from '$components/ui';
 	import { selectedTreeFilters, loadTopSpecies, getSpeciesStats } from '$lib/trees';
 	import type { TopSpecies } from '$lib/trees';
 	import type { SpeciesStats } from '$lib/trees';
@@ -106,30 +106,6 @@
 		</Notice>
 	</div>
 	
-	<Button
-		variant="secondary"
-		onClick={() => selectedTreeFilters.set({ species: [] })}
-		className="!border-gray-300 !bg-transparent !px-3 !py-1 !text-sm !text-gray-600 hover:!bg-gray-100"
-	>
-		Alle Baumarten anzeigen
-	</Button>
-
-	{#if current.length > 0}
-		<div class="flex flex-wrap gap-2" aria-label="Ausgewählte Baumarten">
-			{#each current as species (species)}
-				<Button
-					variant="secondary"
-					className="!border-green-600 !bg-green-300 !px-3 !py-1 !text-sm !text-green-900 hover:!bg-green-300"
-					onClick={() => toggleSpecies(species)}
-					ariaLabel={`${species} abwählen`}
-				>
-					<span>{species}</span>
-					<span aria-hidden="true" class="text-base leading-none">×</span>
-				</Button>
-			{/each}
-		</div>
-	{/if}
-
 	<Searchfield
 		items={topSpecies}
 		labelKey="label"

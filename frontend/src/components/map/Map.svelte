@@ -23,12 +23,13 @@
 
 	// UI components & styles
 	import MapControls from './MapControls.svelte';
+	import MapFilterActions from './MapFilterActions.svelte';
 	import './Map.css';
 
 	// ⚙️ State
 	const id = 'map-' + Math.random().toString(36).substring(2, 9);
 	const markerGroupRegistry = new Map<MarkerClusterGroup, string[]>();
-	let map: L.Map = $state();
+	let map = $state<L.Map>();
 	let loadedSegmentFiles = new Set<string>();
 	let allMarkerGroups: MarkerClusterGroup[] = $state([]);
 	let lastFilter: TreeFilter = $state({ species: [] });
@@ -38,8 +39,11 @@
 
 	// 📍 Load visible segments
 	const onMove = async () => {
+		const currentMap = map;
+		if (!currentMap) return;
+
 		setTimeout(async () => {
-			const bounds = map.getBounds();
+			const bounds = currentMap.getBounds();
 			const ne = bounds.getNorthEast();
 			const sw = bounds.getSouthWest();
 
@@ -48,7 +52,7 @@
 			for (const file of segmentFiles.filter((f) => !loadedSegmentFiles.has(f))) {
 				await renderSegmentFile(
 					file,
-					map,
+					currentMap,
 					$selectedTreeFilters,
 					loadedSegmentFiles,
 					markerGroupRegistry,
@@ -114,4 +118,5 @@
 <div {id} class="fixed top-0 left-0 min-w-full min-h-full"></div>
 
 <!-- 🧭 Custom controls -->
-<MapControls {map} />
+<MapControls map={map!} />
+<MapFilterActions />
