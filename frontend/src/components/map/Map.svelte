@@ -61,7 +61,7 @@
 	// 🗺️ Map initialization
 	onMount(() => {
 		const tileURL =
-			'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/light_all/{z}/{x}/{y}.png';
+			'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/light_all/{z}/{x}/{y}.png?key=cb1_3vng_1_3735b0fff89993123cde7baa';
 
 		const layer = L.tileLayer(tileURL, {
 			attribution:

@@ -1,16 +1,29 @@
 <script lang="ts">
-	import { Button } from '$components/ui';
-	import { selectedTreeFilters, loadTopSpecies } from '$lib/trees';
+	import { Button, Searchfield } from '$components/ui';
+	import { selectedTreeFilters, loadTopSpecies, getSpeciesStats } from '$lib/trees';
+	import type { TopSpecies } from '$lib/trees';
+	import type { SpeciesStats } from '$lib/trees';
 	import { onMount } from 'svelte';
-	import {Notice} from '$components/ui';
+	import { Notice } from '$components/ui';
 
-	let topSpecies: { label: string; count: number }[] = $state([]);
+	let topSpecies: TopSpecies[] = $state([]);
+	let speciesStats: SpeciesStats = $state({ totalTrees: 0, distinctSpecies: 0 });
+	let searchQuery = $state('');
+	let sortKey: 'label' | 'count' = $state('count');
+	let sortDirection: 'asc' | 'desc' = $state('desc');
+	let tableElement = $state<HTMLDivElement>();
+	let hasInteracted = $state(false);
+	let animatedSpeciesIndex = $state<number | null>(null);
 
 	onMount(async () => {
-		topSpecies = await loadTopSpecies();
+		topSpecies = await loadTopSpecies(Infinity);
+		const res = await fetch('/data/species-count.json');
+		const data: Record<string, number> = await res.json();
+		speciesStats = getSpeciesStats(data);
 	});
 
 	function toggleSpecies(species: string) {
+		stopTableAnimation();
 		const currentSpecies = $selectedTreeFilters.species ?? [];
 		const updated = currentSpecies.includes(species)
 			? currentSpecies.filter((s) => s !== species)
@@ -19,44 +32,162 @@
 		selectedTreeFilters.set({ species: updated });
 	}
 
+	function handleSearchInput(query: string) {
+		stopTableAnimation();
+		searchQuery = query;
+		if (query.trim()) {
+			sortKey = 'label';
+			sortDirection = 'asc';
+		}
+	}
+
+	function stopTableAnimation() {
+		hasInteracted = true;
+		animatedSpeciesIndex = null;
+	}
+
 	let current = $derived($selectedTreeFilters.species ?? []);
+	let visibleSpecies = $derived(
+		topSpecies
+			.toSorted((left, right) => {
+				const comparison =
+					sortKey === 'label'
+						? left.label.localeCompare(right.label, 'de')
+						: left.count - right.count;
+				return sortDirection === 'asc' ? comparison : -comparison;
+			})
+	);
+
+	function changeSort(key: 'label' | 'count') {
+		stopTableAnimation();
+		if (sortKey === key) {
+			sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+		} else {
+			sortKey = key;
+			sortDirection = key === 'count' ? 'desc' : 'asc';
+		}
+	}
+
+	onMount(() => {
+		const interval = window.setInterval(() => {
+			if (hasInteracted || visibleSpecies.length === 0) return;
+
+			const numberOfCandidates = Math.min(5, visibleSpecies.length);
+			let nextIndex = Math.floor(Math.random() * numberOfCandidates);
+			if (numberOfCandidates > 1 && nextIndex === animatedSpeciesIndex) {
+				nextIndex = (nextIndex + 1) % numberOfCandidates;
+			}
+			animatedSpeciesIndex = nextIndex;
+		}, 1200);
+
+		return () => window.clearInterval(interval);
+	});
+
+	$effect(() => {
+		const query = searchQuery.trim().toLocaleLowerCase();
+		if (!query || !tableElement) return;
+
+		const matchingIndex = visibleSpecies.findIndex((species) =>
+			species.label.toLocaleLowerCase().includes(query)
+		);
+		if (matchingIndex >= 0) {
+			tableElement.scrollTo({ top: matchingIndex * 48, behavior: 'smooth' });
+		}
+	});
 </script>
 
-<div class="w-full max-w-screen-lg mx-auto space-y-10 pt-2">
+<div class="w-full max-w-screen-lg mx-auto space-y-7 pt-2">
 	<!-- Beschreibung -->
 	<div class="space-y-2 text-lg text-gray-800 leading-relaxed">
 		<Notice tone="info">
-			Hier kannst du gezielt nach bestimmten Baumarten filtern.
-			Zur Auswahl stehen die <strong>30 häufigsten</strong> Arten in Bielefeld, die gemeinsam rund
-			<strong>85 % aller Stadtbäume</strong> ausmachen.
-			Wähle eine oder mehrere Arten aus – die Karte zeigt anschließend nur diese an.
+			Es gibt <strong>{speciesStats.totalTrees} Stadtbäume</strong> in Bielefeld, darunter
+			<strong>{speciesStats.distinctSpecies} verschiedene Arten</strong>.<br>
+			Wähle hier, welche Arten du in der Karte sehen willst.
 		</Notice>
-
 	</div>
+	
+	<Button
+		variant="secondary"
+		onClick={() => selectedTreeFilters.set({ species: [] })}
+		className="!border-gray-300 !bg-transparent !px-3 !py-1 !text-sm !text-gray-600 hover:!bg-gray-100"
+	>
+		Alle Baumarten anzeigen
+	</Button>
 
-	<!-- Graue Box -->
-	<div class="bg-gray-50 border border-gray-200 rounded-2xl px-6 py-6 space-y-6 w-full">
-		<!-- Baumarten-Buttons -->
-		<div class="flex flex-wrap gap-x-4 gap-y-3">
-			{#each topSpecies as species}
+	{#if current.length > 0}
+		<div class="flex flex-wrap gap-2" aria-label="Ausgewählte Baumarten">
+			{#each current as species (species)}
 				<Button
-					onClick={() => toggleSpecies(species.label)}
-					variant={current.includes(species.label) ? 'primary' : 'default'}
+					variant="secondary"
+					className="!border-green-600 !bg-green-300 !px-3 !py-1 !text-sm !text-green-900 hover:!bg-green-300"
+					onClick={() => toggleSpecies(species)}
+					ariaLabel={`${species} abwählen`}
 				>
-					<strong>{species.label}</strong>&nbsp;({species.count})
+					<span>{species}</span>
+					<span aria-hidden="true" class="text-base leading-none">×</span>
 				</Button>
 			{/each}
 		</div>
+	{/if}
 
-		<!-- 🔁 Alle anzeigen unten -->
-		<div>
-			<Button
-				variant={current.length === 0 ? 'primary' : 'default'}
-				onClick={() => selectedTreeFilters.set({ species: [] })}
-				className="w-full justify-center"
+	<Searchfield
+		items={topSpecies}
+		labelKey="label"
+		valueKey="label"
+		placeholder="Baumart suchen ..."
+		bind:value={searchQuery}
+		showSuggestions={false}
+		onFocus={stopTableAnimation}
+		onInput={handleSearchInput}
+	/>
+
+
+	<div class="overflow-hidden rounded-lg border border-gray-200 bg-white">
+		<div class="grid grid-cols-[minmax(0,1fr)_minmax(10rem,max-content)] border-b
+				border-gray-200 bg-gray-100
+				text-left text-sm font-semibold text-gray-700">
+			<button
+				type="button"
+				class="flex items-center justify-between px-4 py-3 text-left hover:bg-gray-200"
+				onclick={() => changeSort('label')}
 			>
-				<strong>Alle Baumarten anzeigen</strong>
-			</Button>
+				Baumart
+				{#if sortKey === 'label'}<span aria-hidden="true">{sortDirection === 'asc' ? '↑' : '↓'}</span>{/if}
+			</button>
+			<button
+				type="button"
+				class="flex items-center justify-end gap-2 whitespace-nowrap border-l border-gray-200 px-4 py-3 text-right hover:bg-gray-200"
+				onclick={() => changeSort('count')}
+			>
+				Häufigkeit
+				{#if sortKey === 'count'}
+					<span
+						aria-hidden="true"
+						class="inline-flex size-4 items-center justify-center text-xl font-bold leading-none"
+					>
+						{sortDirection === 'asc' ? '↑' : '↓'}
+					</span>
+				{/if}
+			</button>
 		</div>
+
+		<div bind:this={tableElement} class="max-h-96 divide-y divide-gray-100 overflow-y-auto">
+			{#each visibleSpecies as species (species.label)}
+				<button
+					type="button"
+					class={`grid h-12 w-full grid-cols-[minmax(0,1fr)_minmax(10rem,max-content)] text-left transition ${current.includes(species.label) ? 'bg-green-300 hover:!bg-green-300' : animatedSpeciesIndex === visibleSpecies.indexOf(species) ? 'bg-green-100' : 'bg-white hover:bg-green-100'}`}
+					onmouseenter={stopTableAnimation}
+					onclick={() => toggleSpecies(species.label)}
+				>
+					<span class="truncate px-4 py-3 font-medium text-gray-900">{species.label}</span>
+					<span class="whitespace-nowrap border-l border-gray-100 px-4 py-3 text-right text-gray-700">
+						{species.count} ({species.share.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %)
+					</span>
+				</button>
+			{:else}
+				<p class="px-4 py-5 text-sm text-gray-500">Keine Baumart gefunden</p>
+			{/each}
+		</div>
+
 	</div>
 </div>

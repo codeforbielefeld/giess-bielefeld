@@ -11,6 +11,7 @@
 		className?: string;
 		type?: ButtonType;
 		disabled?: boolean;
+		ariaLabel?: string;
 		onClick?: (e: MouseEvent) => void;
 		children?: import('svelte').Snippet;
 	}
@@ -20,6 +21,7 @@
 		className = '',
 		type = 'button',
 		disabled = false,
+		ariaLabel = undefined,
 		onClick = () => {},
 		children
 	}: Props = $props();
@@ -40,6 +42,7 @@
 <button
 	{type}
 	{disabled}
+	aria-label={ariaLabel}
 	class={`border-2 rounded-full px-4 py-2 flex items-center justify-center transition duration-150 ease-in-out
 		${variantClasses[variant]}
 		${disabled ? 'opacity-50 cursor-not-allowed' : ''}
